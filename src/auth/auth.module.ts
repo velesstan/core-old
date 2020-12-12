@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
 import { UserModule } from '../user';
@@ -22,17 +21,12 @@ import { RolesRef, RolesSchema } from './schemas';
         schema: RolesSchema,
       },
     ]),
-    // PassportModule.register({
-    //   defaultStrategy: 'jwt',
-    // }),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
         return {
-          secret: configService.get<string>('APP_JWT_ACCESS_TOKEN_SECRET'),
+          secret: configService.get<string>('JWT_TOKEN_SECRET'),
           signOptions: {
-            expiresIn:
-              configService.get<number>('APP_JWT_ACCESS_TOKEN_EXPIRY_TIME')! *
-              3600,
+            expiresIn: configService.get<number>('JWT_TOKEN_EXPIRY')! * 3600,
           },
         };
       },
