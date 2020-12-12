@@ -10,6 +10,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+
 import { Product } from '../interfaces';
 
 export class CreateProductDto implements Product {

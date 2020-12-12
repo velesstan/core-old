@@ -1,7 +1,7 @@
 import { MinLength, MaxLength, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-import { Category } from 'src/erp/interfaces';
+import { Category } from '../interfaces';
 
 export class CreateCategoryDto implements Category {
   @IsString()

@@ -14,7 +14,7 @@ export class RolesController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll(): Promise<IRoleModel[]> {
+  async getAll(): Promise<IRoleModel[]> {
     return await this.rolesService.findAll();
   }
   @UseGuards(JwtAuthGuard)

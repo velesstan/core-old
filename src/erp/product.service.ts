@@ -19,15 +19,12 @@ export class ProductService {
     }
     return await this.productModel.find(opts).populate('category').exec();
   }
-  async createProduct(product: CreateProductDto): Promise<ProductModel> {
+  async create(product: CreateProductDto): Promise<ProductModel> {
     return await (
       await new this.productModel(product).populate('category').save()
     ).execPopulate();
   }
-  async updateProduct(
-    id: string,
-    product: UpdateProductDto,
-  ): Promise<ProductModel> {
+  async update(id: string, product: UpdateProductDto): Promise<ProductModel> {
     return await this.productModel
       .findByIdAndUpdate(id, product, {
         new: true,
@@ -35,7 +32,7 @@ export class ProductService {
       .populate('category')
       .exec();
   }
-  async removeProduct(id: string) {
+  async removeById(id: string) {
     return await this.productModel.findByIdAndRemove(id).exec();
     // TODO remove transactions
   }

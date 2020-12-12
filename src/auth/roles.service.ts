@@ -3,12 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { IRoleModel } from './interfaces';
-import { RolesRef } from './schemas';
+import { RoleRef } from './schemas';
 
 @Injectable()
 export class RolesService {
   constructor(
-    @InjectModel(RolesRef) private readonly rolesModel: Model<IRoleModel>,
+    @InjectModel(RoleRef) private readonly rolesModel: Model<IRoleModel>,
   ) {}
 
   async findAll(): Promise<IRoleModel[]> {

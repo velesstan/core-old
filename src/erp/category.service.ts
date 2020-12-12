@@ -13,13 +13,13 @@ export class CategoryService {
     private readonly categoryModel: Model<CategoryModel>,
   ) {}
 
-  async getCategories(): Promise<CategoryModel[]> {
+  async getAll(): Promise<CategoryModel[]> {
     return await this.categoryModel.find({}).exec();
   }
-  async createCategory(category: CreateCategoryDto): Promise<CategoryModel> {
+  async create(category: CreateCategoryDto): Promise<CategoryModel> {
     return await new this.categoryModel(category).save();
   }
-  async updateCategory(
+  async update(
     id: string,
     category: UpdateCategoryDto,
   ): Promise<CategoryModel> {
@@ -29,7 +29,7 @@ export class CategoryService {
       })
       .exec();
   }
-  async removeCategory(id: string) {
+  async removeById(id: string) {
     return await this.categoryModel.findByIdAndDelete(id).exec();
     // TODO remove products & transactions
   }

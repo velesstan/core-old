@@ -1,1 +1,1 @@
-export { RolesRef, RolesSchema } from './role.schema';
+export { RoleRef, RoleSchema } from './role.schema';

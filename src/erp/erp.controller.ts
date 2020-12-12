@@ -38,24 +38,24 @@ export class ERPController {
   // Cateories
   @Get('/categories')
   async getCategories(): Promise<CategoryModel[]> {
-    return await this.categoryService.getCategories();
+    return await this.categoryService.getAll();
   }
   @Post('/categories')
   async createCategory(
     @Body() cateory: CreateCategoryDto,
   ): Promise<CategoryModel> {
-    return await this.categoryService.createCategory(cateory);
+    return await this.categoryService.create(cateory);
   }
   @Put('/categories/:id')
   async updateCategory(
     @Param('id') id: string,
     @Body() category: UpdateCategoryDto,
   ) {
-    return await this.categoryService.updateCategory(id, category);
+    return await this.categoryService.update(id, category);
   }
   @Delete('/categories/:id')
   async removeCategory(@Param('id') id: string) {
-    return await this.categoryService.removeCategory(id);
+    return await this.categoryService.removeById(id);
   }
 
   // Products
@@ -67,18 +67,18 @@ export class ERPController {
   async createProduct(
     @Body() product: CreateProductDto,
   ): Promise<ProductModel> {
-    return await this.productService.createProduct(product);
+    return await this.productService.create(product);
   }
   @Put('/products/:id')
   async updateProduct(
     @Param('id') id: string,
     @Body() product: UpdateProductDto,
   ) {
-    return await this.productService.updateProduct(id, product);
+    return await this.productService.update(id, product);
   }
   @Delete('/products/:id')
   async removeProduct(@Param('id') id: string) {
-    return await this.productService.removeProduct(id);
+    return await this.productService.removeById(id);
   }
 
   // Stocks

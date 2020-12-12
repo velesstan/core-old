@@ -4,15 +4,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { UserService } from '../user';
-import { SignInDto } from './dto';
 
+import { SignInDto } from './dto';
 import { IRoleModel } from './interfaces';
-import { RolesRef } from './schemas';
+import { RoleRef } from './schemas';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(RolesRef) private readonly rolesModel: Model<IRoleModel>,
+    @InjectModel(RoleRef) private readonly rolesModel: Model<IRoleModel>,
     private userService: UserService,
     private jwtService: JwtService,
   ) {}

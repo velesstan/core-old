@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
 
-export const RolesRef = 'Roles';
+export const RoleRef = 'RolesRef';
 
-export const RolesSchema = new Schema(
+export const RoleSchema = new Schema(
   {
     value: {
       type: String,

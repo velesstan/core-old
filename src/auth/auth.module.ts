@@ -11,14 +11,14 @@ import { AuthController } from './auth.controller';
 import { RolesController } from './roles.controller';
 import { RolesService } from './roles.service';
 
-import { RolesRef, RolesSchema } from './schemas';
+import { RoleRef, RoleSchema } from './schemas';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {
-        name: RolesRef,
-        schema: RolesSchema,
+        name: RoleRef,
+        schema: RoleSchema,
       },
     ]),
     JwtModule.registerAsync({
