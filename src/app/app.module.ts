@@ -10,7 +10,7 @@ import { AppService } from './app.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.STAGE}.env`,
+      envFilePath: `.${process.env.APP_ENV}.env`,
       validationSchema: ENV_SCHEMA,
       load: [CONFIG],
       validationOptions: {
