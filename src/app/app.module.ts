@@ -7,6 +7,8 @@ import CONFIG, { ENV_SCHEMA } from '../env.schema';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+import { UserModule } from '../user';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,9 +25,11 @@ import { AppService } from './app.service';
       useFactory: (configService: ConfigService) => {
         return {
           uri: configService.get('DB_CONNECTION'),
+          useCreateIndex: true,
         };
       },
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
