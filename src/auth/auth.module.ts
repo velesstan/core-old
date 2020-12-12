@@ -24,9 +24,9 @@ import { RolesRef, RolesSchema } from './schemas';
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
         return {
-          secret: configService.get<string>('JWT_TOKEN_SECRET'),
+          secret: configService.get<string>('APP_JWT_TOKEN_SECRET'),
           signOptions: {
-            expiresIn: configService.get<number>('JWT_TOKEN_EXPIRY')! * 3600,
+            expiresIn: configService.get<number>('APP_JWT_TOKEN_EXPIRY') * 3600,
           },
         };
       },
