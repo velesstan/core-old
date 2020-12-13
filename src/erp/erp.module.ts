@@ -12,9 +12,8 @@ import {
   TransactionSchema,
 } from './schemas';
 
-import { TransactionService } from './transaction.service';
-import { ERPService } from './erp.service';
 import { ERPController } from './erp.controller';
+import { TransactionService } from './transaction.service';
 import { ProductService } from './product.service';
 import { CategoryService } from './category.service';
 import { StockService } from './stock.service';
@@ -31,7 +30,6 @@ import { StockService } from './stock.service';
   controllers: [ERPController],
   providers: [
     TransactionService,
-    ERPService,
     ProductService,
     CategoryService,
     StockService,
