@@ -8,6 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build:docker:testing": "docker build -t velesstan/core:testing . && docker push velesstan/core:testing",
+    "build:docker:production": "docker build -t velesstan/core:production . && docker push velesstan/core:production",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "cross-env APP_ENV=development nest start --watch",
