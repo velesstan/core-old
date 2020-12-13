@@ -19,7 +19,6 @@ import {
   UpdateStockDto,
   CreateWaybillDto,
 } from './dto';
-import { ERPService } from './erp.service';
 import { TransactionService } from './transaction.service';
 import { CategoryService } from './category.service';
 import { StockService } from './stock.service';
@@ -28,7 +27,6 @@ import { ProductService } from './product.service';
 @Controller('/erp')
 export class ERPController {
   constructor(
-    private readonly erpService: ERPService,
     private readonly categoryService: CategoryService,
     private readonly stockService: StockService,
     private readonly productService: ProductService,

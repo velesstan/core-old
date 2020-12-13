@@ -12,8 +12,6 @@ import {
   WaybillItem,
 } from './interfaces';
 import { CreateWaybillDto } from './dto';
-
-import { ERPService } from './erp.service';
 import { ProductService } from './product.service';
 import { CategoryService } from './category.service';
 import { StockService } from './stock.service';

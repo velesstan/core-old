@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
-import { IUser } from '../interfaces';
+import { User } from '../interfaces';
 
-export class UpdateUserDto implements IUser {
+export class UpdateUserDto implements User {
   @ApiProperty({
     default: 'test@test.com',
   })
