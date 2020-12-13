@@ -17,3 +17,5 @@ MODIFY ENV constants (auth)
 ADD ROLE-based auth
 Check api endpoints guard
 if there users exists -> dont create draft user
+
+DOCKER COMPOSE & ENV -> drive

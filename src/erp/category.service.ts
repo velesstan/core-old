@@ -13,13 +13,13 @@ export class CategoryService {
     private readonly categoryModel: Model<CategoryModel>,
   ) {}
 
-  async getAll(): Promise<CategoryModel[]> {
+  async find(): Promise<CategoryModel[]> {
     return await this.categoryModel.find({}).exec();
   }
   async create(category: CreateCategoryDto): Promise<CategoryModel> {
     return await new this.categoryModel(category).save();
   }
-  async update(
+  async updateById(
     id: string,
     category: UpdateCategoryDto,
   ): Promise<CategoryModel> {

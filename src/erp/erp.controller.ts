@@ -37,21 +37,21 @@ export class ERPController {
 
   // Cateories
   @Get('/categories')
-  async getCategories(): Promise<CategoryModel[]> {
-    return await this.categoryService.getAll();
+  async find(): Promise<CategoryModel[]> {
+    return await this.categoryService.find();
   }
   @Post('/categories')
   async createCategory(
-    @Body() cateory: CreateCategoryDto,
+    @Body() category: CreateCategoryDto,
   ): Promise<CategoryModel> {
-    return await this.categoryService.create(cateory);
+    return await this.categoryService.create(category);
   }
   @Put('/categories/:id')
   async updateCategory(
     @Param('id') id: string,
     @Body() category: UpdateCategoryDto,
   ) {
-    return await this.categoryService.update(id, category);
+    return await this.categoryService.updateById(id, category);
   }
   @Delete('/categories/:id')
   async removeCategory(@Param('id') id: string) {
@@ -60,8 +60,8 @@ export class ERPController {
 
   // Products
   @Get('/products')
-  async getProducts(): Promise<ProductModel[]> {
-    return await this.productService.getProducts();
+  async findAll(): Promise<ProductModel[]> {
+    return await this.productService.find();
   }
   @Post('/products')
   async createProduct(
@@ -74,7 +74,7 @@ export class ERPController {
     @Param('id') id: string,
     @Body() product: UpdateProductDto,
   ) {
-    return await this.productService.update(id, product);
+    return await this.productService.updateById(id, product);
   }
   @Delete('/products/:id')
   async removeProduct(@Param('id') id: string) {
@@ -84,7 +84,7 @@ export class ERPController {
   // Stocks
   @Get('/stocks')
   async getStocks(): Promise<StockModel[]> {
-    return await this.stockService.getAll();
+    return await this.stockService.find();
   }
   @Post('/stocks')
   async createStock(@Body() stock: CreateStockDto): Promise<StockModel> {

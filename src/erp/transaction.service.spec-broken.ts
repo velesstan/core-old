@@ -16,19 +16,35 @@ import {
   TransactionRef,
   TransactionSchema,
 } from './schemas';
-import { WaybillAction, WaybillType } from './interfaces';
+import {
+  CategoryModel,
+  ProductModel,
+  StockModel,
+  WaybillAction,
+  WaybillType,
+} from './interfaces';
+import { ProductService } from './product.service';
+import { StockService } from './stock.service';
+import { CategoryService } from './category.service';
 
 let mongod: MongoMemoryServer;
 
 describe('Transaction service', () => {
   let module: TestingModule;
-  let erpService: ERPService;
+  let productService: ProductService;
+  let stockService: StockService;
+  let categoryService: CategoryService;
   let transactionService: TransactionService;
+
+  let category: CategoryModel;
+  let product: ProductModel;
+  let stockA: StockModel;
+  let stockB: StockModel;
 
   afterEach(async () => {
     await module.close();
-    await mongoose.disconnect();
     await mongod.stop();
+    await mongoose.disconnect();
   });
 
   beforeEach(async () => {
@@ -38,6 +54,7 @@ describe('Transaction service', () => {
         MongooseModule.forRootAsync({
           useFactory: async () => ({
             uri: await mongod.getUri(),
+            useFindAndModify: false,
             useUnifiedTopology: true,
             useNewUrlParser: true,
             useCreateIndex: true,
@@ -50,13 +67,22 @@ describe('Transaction service', () => {
           { name: TransactionRef, schema: TransactionSchema },
         ]),
       ],
-      providers: [ERPService, TransactionService],
+      providers: [
+        TransactionService,
+        StockService,
+        ProductService,
+        CategoryService,
+      ],
     }).compile();
-    erpService = module.get(ERPService);
+    productService = module.get(ProductService);
+    categoryService = module.get(CategoryService);
+    stockService = module.get(StockService);
     transactionService = module.get(TransactionService);
   });
 
-  it('Transaction service should be defined', () => {
+  describe('Making transactions', () => {});
+
+  it('service should be defined', () => {
     expect(transactionService).toBeDefined();
   });
 

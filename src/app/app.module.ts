@@ -28,6 +28,9 @@ import { ERPModule } from '../erp';
         return {
           uri: configService.get('DB_CONNECTION'),
           useCreateIndex: true,
+          useFindAndModify: true,
+          useUnifiedTopology: true,
+          useNewUrlParser: true,
         };
       },
     }),

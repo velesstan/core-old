@@ -4,9 +4,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 import { StockService } from './stock.service';
-
 import { StockRef, StockSchema } from './schemas';
-import { Stock, StockModel } from './interfaces';
 
 let mongod: MongoMemoryServer;
 
@@ -16,8 +14,8 @@ describe('Stock service', () => {
 
   afterEach(async () => {
     await module.close();
-    await mongoose.disconnect();
     await mongod.stop();
+    await mongoose.disconnect();
   });
 
   beforeEach(async () => {
@@ -27,6 +25,7 @@ describe('Stock service', () => {
         MongooseModule.forRootAsync({
           useFactory: async () => ({
             uri: await mongod.getUri(),
+            useFindAndModify: false,
             useUnifiedTopology: true,
             useNewUrlParser: true,
             useCreateIndex: true,
@@ -96,6 +95,6 @@ describe('Stock service', () => {
       title: 'Stock-2',
       waybillPrefix: 'S-C',
     });
-    expect((await stockService.getAll()).length).toBe(2);
+    expect((await stockService.find()).length).toBe(2);
   });
 });

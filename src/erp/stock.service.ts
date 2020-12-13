@@ -15,7 +15,7 @@ export class StockService {
   async getById(id: string): Promise<StockModel> {
     return await this.stockModel.findById(id).exec();
   }
-  async getAll(): Promise<StockModel[]> {
+  async find(): Promise<StockModel[]> {
     return await this.stockModel.find({}).exec();
   }
   async create(stock: CreateStockDto): Promise<StockModel> {

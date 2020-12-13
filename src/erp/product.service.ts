@@ -12,19 +12,27 @@ export class ProductService {
     @InjectModel(ProductRef) private readonly productModel: Model<ProductModel>,
   ) {}
 
-  async getProducts(category?: string): Promise<ProductModel[]> {
+  async find(category?: string): Promise<ProductModel[]> {
     const opts: any = {};
     if (category) {
       opts.category = category;
     }
     return await this.productModel.find(opts).populate('category').exec();
   }
+
+  async getById(id: string): Promise<ProductModel | null> {
+    return await this.productModel.findById(id).exec();
+  }
+
   async create(product: CreateProductDto): Promise<ProductModel> {
     return await (
       await new this.productModel(product).populate('category').save()
     ).execPopulate();
   }
-  async update(id: string, product: UpdateProductDto): Promise<ProductModel> {
+  async updateById(
+    id: string,
+    product: UpdateProductDto,
+  ): Promise<ProductModel> {
     return await this.productModel
       .findByIdAndUpdate(id, product, {
         new: true,
