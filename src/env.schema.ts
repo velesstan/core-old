@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 export const ENV_SCHEMA = Joi.object({
-  APP_ENV: Joi.string().required(),
   APP_JWT_TOKEN_SECRET: Joi.string().required(),
   APP_JWT_TOKEN_EXPIRY: Joi.number().required(),
   DB_USER: Joi.string().required(),
