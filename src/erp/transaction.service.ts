@@ -129,7 +129,7 @@ export class TransactionService {
   async CalculateResidue(residueOpts: ResidueOpts): Promise<any> {
     const { stock, startDate, endDate } = residueOpts;
 
-    let matchingOpts: Array<any> = [];
+    const matchingOpts: Array<any> = [];
     if (stock !== undefined) {
       matchingOpts.push({
         $match: {
