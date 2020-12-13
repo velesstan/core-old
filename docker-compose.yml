@@ -1,6 +1,10 @@
 version: '3.8'
 
 services:
+  dashboard:
+    image: velesstan/dashboard
+    ports:
+      - 80:80
   core:
     image: velesstan/core
     restart: always
