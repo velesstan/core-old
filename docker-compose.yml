@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  core:
+    image: velesstan/core
+    restart: always
+    ports:
+      - 3000:3000
+    env_file: ./.env
+    depends_on:
+      - database
+  database:
+    image: mongo:4.2.10
+    restart: always
+    volumes:
+      - ./mongod.conf:/etc/mongod.conf
+      - ./mongodb:/data/db
+    command: mongod --config /etc/mongod.conf
+    env_file: ./.env
+    ports:
+      - '27017:27017'

@@ -8,7 +8,23 @@ import { CreateUserDto, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(UserRef) private userModel: Model<IUserModel>) {}
+  constructor(@InjectModel(UserRef) private userModel: Model<IUserModel>) {
+    this.bootstrap();
+  }
+
+  async bootstrap() {
+    const draftUser = await this.userModel
+      .findOne({
+        email: 'admin@veles.services',
+      })
+      .exec();
+    if (!draftUser) {
+      await this.create({
+        email: 'admin@veles.services',
+        password: 'admin',
+      });
+    }
+  }
 
   async create(user: CreateUserDto): Promise<IUserModel> {
     return await new this.userModel(user).save();
