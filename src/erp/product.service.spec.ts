@@ -73,6 +73,26 @@ describe('Product service', () => {
     });
   });
 
+  it('should update product', async () => {
+    let product$ = await productService.create({
+      title: 'Product',
+      category: category.id,
+      code: 'product-1',
+      price: 300,
+    });
+    product$ = await productService.updateById(product$.id, {
+      title: 'Product',
+      category: category.id,
+      code: 'product-2',
+      price: 330,
+    });
+    expect(product$).toMatchObject({
+      title: 'Product',
+      code: 'product-2',
+      price: 330,
+    });
+  });
+
   it('should remove product', async () => {
     const product$ = await productService.create({
       title: 'Product',
