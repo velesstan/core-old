@@ -13,6 +13,7 @@
     "guards",
     "strategies",
     ".module.ts",
+    ".controller.ts",
     "env.schema.ts",
     "main.ts",
     "swagger.api.ts"
