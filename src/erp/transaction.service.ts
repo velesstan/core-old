@@ -2,18 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
+import moment from 'dayjs';
+
 import { TransactionRef } from './schemas';
 import {
   TransactionModel,
-  Transaction,
-  ResidueOpts,
   WaybillAction,
   WaybillType,
   WaybillItem,
 } from './interfaces';
 import { CreateWaybillDto } from './dto';
-import { ProductService } from './product.service';
-import { CategoryService } from './category.service';
 import { StockService } from './stock.service';
 
 type BulkData = {
@@ -31,8 +29,6 @@ export class TransactionService {
   constructor(
     @InjectModel(TransactionRef)
     private readonly transactionModel: Model<TransactionModel>,
-    private readonly productService: ProductService,
-    private readonly categoryService: CategoryService,
     private readonly stockService: StockService,
   ) {}
 
@@ -41,24 +37,20 @@ export class TransactionService {
     console.log(data);
     await Promise.all(
       items.map((item) =>
-        this.WriteTransaction({
+        new this.transactionModel({
           stock: stock,
           product: item.product,
           quantity: item.quantity,
           snapshot: item.snapshot,
           waybill: waybill,
-        }),
+        }).save(),
       ),
     );
   }
 
-  async WriteTransaction(transaction: Transaction): Promise<TransactionModel> {
-    return await new this.transactionModel(transaction).save();
-  }
-
   async CreateWaybill(waybill: CreateWaybillDto) {
     const { action, source, destination, products } = waybill;
-    // const date = moment.utc().toDate();
+    const date = moment().toDate();
     switch (action) {
       case WaybillAction.BUY:
       case WaybillAction.IMPORT: {
@@ -71,7 +63,7 @@ export class TransactionService {
           waybill: {
             type: WaybillType.INCOME,
             action: action,
-            date: new Date(),
+            date: date,
             id: incomeWB,
           },
         });
@@ -126,9 +118,11 @@ export class TransactionService {
     }
   }
 
-  async CalculateResidue(residueOpts: ResidueOpts): Promise<any> {
-    const { stock, startDate, endDate } = residueOpts;
-
+  async CalculateResidue(
+    stock: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<any> {
     const matchingOpts: Array<any> = [];
     if (stock !== undefined) {
       matchingOpts.push({

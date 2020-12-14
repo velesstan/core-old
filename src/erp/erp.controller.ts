@@ -111,17 +111,16 @@ export class ERPController {
     return await this.transactionService.GetWaybills();
   }
 
-  Residue;
   @Get('/residue')
   async calculateResidue(
     @Query('startDate') start: Date,
     @Query('endDate') end: Date,
     @Query('stock') stock: string,
   ) {
-    return await this.transactionService.CalculateResidue({
-      stock: stock,
-      startDate: moment(start).startOf('day').toDate(),
-      endDate: moment(end).endOf('day').toDate(),
-    });
+    return await this.transactionService.CalculateResidue(
+      stock,
+      moment(start).startOf('day').toDate(),
+      moment(end).endOf('day').toDate(),
+    );
   }
 }

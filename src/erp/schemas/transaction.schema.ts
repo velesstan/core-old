@@ -45,14 +45,6 @@ export const TransactionSchema = new Schema({
       type: Number,
       required: true,
     },
-    reduce: {
-      type: Boolean,
-      required: true,
-    },
-    discount: {
-      type: Number,
-      required: true,
-    },
   },
   createdAt: {
     type: Date,

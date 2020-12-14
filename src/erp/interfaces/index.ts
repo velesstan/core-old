@@ -5,7 +5,6 @@ export {
   Transaction,
   TransactionModel,
   TransactionSnapshot,
-  ResidueOpts,
 } from './transaction.interface';
 export { WaybillAction, WaybillType } from './enums';
 export { WaybillItem } from './waybill-item.interface';
