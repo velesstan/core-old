@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
+import moment from 'dayjs';
 
 import { CategoryModel, ProductModel, StockModel } from './interfaces';
 import {
@@ -110,17 +111,17 @@ export class ERPController {
     return await this.transactionService.GetWaybills();
   }
 
-  // Residue
-  //   @Get('/residue')
-  //   async calculateResidue(
-  //     @Query('startDate') start: Date,
-  //     @Query('endDate') end: Date,
-  //     @Query('stock') stock: string,
-  //   ) {
-  //     return await this.transactionService.CalculateResidue({
-  //       stock: stock,
-  //       startDate: moment.utc(start).startOf('day').toDate(),
-  //       endDate: moment.utc(end).endOf('day').toDate(),
-  //     });
-  //   }
+  Residue;
+  @Get('/residue')
+  async calculateResidue(
+    @Query('startDate') start: Date,
+    @Query('endDate') end: Date,
+    @Query('stock') stock: string,
+  ) {
+    return await this.transactionService.CalculateResidue({
+      stock: stock,
+      startDate: moment(start).startOf('day').toDate(),
+      endDate: moment(end).endOf('day').toDate(),
+    });
+  }
 }
