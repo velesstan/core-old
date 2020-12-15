@@ -19,3 +19,7 @@ Check api endpoints guard
 if there users exists -> dont create draft user
 
 DOCKER COMPOSE & ENV -> drive
+
+REDUCE -: percents or value
+
+set server time & sync

@@ -290,6 +290,7 @@ export class TransactionService {
             items: {
               $push: {
                 product: '$product.title',
+                code: '$product.code',
                 category: '$category.title',
                 quantity: '$quantity',
                 price: '$snapshot.price',
