@@ -10,6 +10,8 @@ import {
   ProductSchema,
   TransactionRef,
   TransactionSchema,
+  WaybillRef,
+  WaybillSchema,
 } from './schemas';
 
 import { ProductService } from './product.service';
@@ -29,6 +31,7 @@ import { TransactionService } from './transaction.service';
       { name: StockRef, schema: StockSchema },
       { name: ProductRef, schema: ProductSchema },
       { name: TransactionRef, schema: TransactionSchema },
+      { name: WaybillRef, schema: WaybillSchema },
     ]),
   ],
   controllers: [
