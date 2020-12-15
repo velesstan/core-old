@@ -5,9 +5,6 @@ import {
   MaxLength,
   IsNumber,
   IsPositive,
-  Min,
-  Max,
-  IsOptional,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 

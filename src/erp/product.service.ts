@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 
 import { ProductRef } from './schemas';
 import { Product, ProductModel } from './interfaces';
-import { UpdateProductDto } from './dto';
 
 @Injectable()
 export class ProductService {

@@ -30,8 +30,7 @@ describe('Transaction service', () => {
 
   let product: ProductModel;
   let category: CategoryModel;
-  let stockA: StockModel;
-  let stockB: StockModel;
+  let stock: StockModel;
 
   afterEach(async () => {
     await module.close();
@@ -81,13 +80,9 @@ describe('Transaction service', () => {
       code: 'test-1',
       price: 100,
     });
-    stockA = await stockService.create({
-      title: 'StockA',
-      waybillPrefix: 'SA',
-    });
-    stockB = await stockService.create({
-      title: 'StockB',
-      waybillPrefix: 'SB',
+    stock = await stockService.create({
+      title: 'Stock',
+      waybillPrefix: 'S',
     });
   });
 
@@ -99,12 +94,12 @@ describe('Transaction service', () => {
     const $transaction = await transactionService.create({
       product: product._id,
       quantity: 1,
-      stock: stockA._id,
+      stock: stock._id,
     });
     expect($transaction).toMatchObject({
       product: product._id,
       quantity: 1,
-      stock: stockA._id,
+      stock: stock._id,
     });
     expect($transaction.createdAt).toBeDefined();
   });
