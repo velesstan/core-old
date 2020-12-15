@@ -1,4 +1,27 @@
 import { Document } from 'mongoose';
 
-export interface Waybill {}
-export interface WaybillModel extends Waybill, Document {}
+import { Transaction, TransactionModel } from './transaction.interface';
+
+export enum WayBillAction {
+  SELL = 'SELL',
+  UTILIZATION = 'UTILIZATION',
+  BUY = 'BUY',
+  IMPORT = 'IMPORT',
+  MOVE = 'MOVE',
+  PRODUCTION = 'PRODUCTION',
+}
+
+export enum WaybillType {
+  INCOME = 'INCOME',
+  OUTCOME = 'OUTCOME',
+}
+export interface Waybill {
+  readonly stock: string; // stock id
+  readonly action: WayBillAction; // action (import/sell/buy)
+  readonly type: WaybillType; // income or outcome
+  readonly transactions: Transaction[]; // transactions with snapshot
+}
+export interface WaybillModel extends Waybill, Document {
+  readonly transactions: TransactionModel[];
+  readonly title: string;
+}

@@ -8,6 +8,8 @@ import {
   StockSchema,
   ProductRef,
   ProductSchema,
+  TransactionRef,
+  TransactionSchema,
 } from './schemas';
 
 import { ProductService } from './product.service';
@@ -16,6 +18,9 @@ import { StockService } from './stock.service';
 import { StockController } from './stock.controller';
 import { ProductController } from './product.controller';
 import { CategoryController } from './category.controller';
+import { WaybillController } from './waybill.controller';
+import { WaybillService } from './waybill.service';
+import { TransactionService } from './transaction.service';
 
 @Module({
   imports: [
@@ -23,9 +28,21 @@ import { CategoryController } from './category.controller';
       { name: CategoryRef, schema: CategorySchema },
       { name: StockRef, schema: StockSchema },
       { name: ProductRef, schema: ProductSchema },
+      { name: TransactionRef, schema: TransactionSchema },
     ]),
   ],
-  controllers: [StockController, ProductController, CategoryController],
-  providers: [ProductService, CategoryService, StockService],
+  controllers: [
+    StockController,
+    ProductController,
+    CategoryController,
+    WaybillController,
+  ],
+  providers: [
+    ProductService,
+    CategoryService,
+    StockService,
+    WaybillService,
+    TransactionService,
+  ],
 })
 export class ERPModule {}
