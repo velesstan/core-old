@@ -1,1 +1,1 @@
-export { IRole, IRoleModel } from './role.interface';
+export { Role, RoleModel } from './role.interface';

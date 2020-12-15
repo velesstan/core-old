@@ -12,12 +12,8 @@ export class ProductService {
     @InjectModel(ProductRef) private readonly productModel: Model<ProductModel>,
   ) {}
 
-  async find(category?: string): Promise<ProductModel[]> {
-    const opts: any = {};
-    if (category) {
-      opts.category = category;
-    }
-    return await this.productModel.find(opts).populate('category').exec();
+  async find(): Promise<ProductModel[]> {
+    return await this.productModel.find({}).populate('category').exec();
   }
 
   async getById(id: string): Promise<ProductModel | null> {

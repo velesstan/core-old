@@ -45,13 +45,16 @@ describe('Category Service', () => {
   });
 
   it('should create category', async () => {
-    await categoryService.create({
+    const category$ = await categoryService.create({
       title: 'Венки',
       unit: 'м',
     });
-    const result = await categoryService.find();
-    expect(result[0].title).toBe('Венки');
-    expect(result[0].unit).toBe('м');
+    expect(category$.title).toBe('Венки');
+    expect(category$.unit).toBe('м');
+  });
+
+  it('should get all categories', async () => {
+    expect(await categoryService.find()).toHaveLength(0);
   });
 
   it('should throw error for dublicate creation', async () => {
@@ -72,7 +75,7 @@ describe('Category Service', () => {
       title: 'Венки',
       unit: 'м',
     });
-    category$ = await categoryService.updateById(category$.id, {
+    category$ = await categoryService.updateById(category$._id, {
       title: 'Веночки',
       unit: 'ед.',
     });
@@ -85,8 +88,7 @@ describe('Category Service', () => {
       title: 'category',
       unit: 'unit',
     });
-    expect((await categoryService.find()).length).toBe(1);
-    await categoryService.removeById(category$.id);
-    expect((await categoryService.find()).length).toBe(0);
+    await categoryService.removeById(category$._id);
+    expect(await categoryService.getById(category$._id)).toBe(null);
   });
 });

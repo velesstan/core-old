@@ -16,6 +16,11 @@ export class CategoryService {
   async find(): Promise<CategoryModel[]> {
     return await this.categoryModel.find({}).exec();
   }
+
+  async getById(id: string): Promise<CategoryModel | null> {
+    return await this.categoryModel.findById(id).exec();
+  }
+
   async create(category: CreateCategoryDto): Promise<CategoryModel> {
     return await new this.categoryModel(category).save();
   }

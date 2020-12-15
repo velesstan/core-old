@@ -50,14 +50,29 @@ describe('Stock service', () => {
     expect(stock$).toMatchObject({ title: 'Stock', waybillPrefix: 'S' });
   });
 
+  it('should get all stocks', async () => {
+    expect(await stockService.find()).toHaveLength(0);
+  });
+
+  it('should update stock', async () => {
+    let stock$ = await stockService.create({
+      title: 'Stock',
+      waybillPrefix: 'S',
+    });
+    stock$ = await stockService.updateById(stock$._id, {
+      title: 'Stock-1',
+      waybillPrefix: 'S-2',
+    });
+    expect(stock$).toMatchObject({ title: 'Stock-1', waybillPrefix: 'S-2' });
+  });
+
   it('should remove stock', async () => {
     const stock$ = await stockService.create({
       title: 'Stock',
       waybillPrefix: 'S',
     });
-    await stockService.removeById(stock$.id);
-    const found = await stockService.getById(stock$.id);
-    expect(found).toBe(null);
+    await stockService.removeById(stock$._id);
+    expect(await stockService.getById(stock$._id)).toBe(null);
   });
 
   it('should throw error for dublicate name', async () => {
@@ -86,15 +101,25 @@ describe('Stock service', () => {
     ).rejects.toThrow();
   });
 
-  it('should get all stocks', async () => {
-    await stockService.create({
+  it('should increase next waybill income number', async () => {
+    let stock$ = await stockService.create({
       title: 'Stock',
       waybillPrefix: 'S',
     });
-    await stockService.create({
-      title: 'Stock-2',
-      waybillPrefix: 'S-C',
+    expect(stock$.incomeWaybillCount).toBe(0);
+    await stockService.nextWaybillIncomeNumber(stock$._id);
+    stock$ = await stockService.getById(stock$._id);
+    expect(stock$.incomeWaybillCount).toBe(1);
+  });
+
+  it('should increase next waybill outcome number', async () => {
+    let stock$ = await stockService.create({
+      title: 'Stock',
+      waybillPrefix: 'S',
     });
-    expect((await stockService.find()).length).toBe(2);
+    expect(stock$.outcomeWaybillCount).toBe(0);
+    await stockService.nextWaybillOutcomeNumber(stock$._id);
+    stock$ = await stockService.getById(stock$._id);
+    expect(stock$.outcomeWaybillCount).toBe(1);
   });
 });

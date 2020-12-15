@@ -62,7 +62,7 @@ describe('Product service', () => {
   it('should create product', async () => {
     const product$ = await productService.create({
       title: 'Product',
-      category: category.id,
+      category: category._id,
       code: 'product-1',
       price: 300,
     });
@@ -76,13 +76,13 @@ describe('Product service', () => {
   it('should update product', async () => {
     let product$ = await productService.create({
       title: 'Product',
-      category: category.id,
+      category: category._id,
       code: 'product-1',
       price: 300,
     });
-    product$ = await productService.updateById(product$.id, {
+    product$ = await productService.updateById(product$._id, {
       title: 'Product',
-      category: category.id,
+      category: category._id,
       code: 'product-2',
       price: 330,
     });
@@ -96,26 +96,25 @@ describe('Product service', () => {
   it('should remove product', async () => {
     const product$ = await productService.create({
       title: 'Product',
-      category: category.id,
+      category: category._id,
       code: 'product-1',
       price: 300,
     });
-    await productService.removeById(product$.id);
-    const found = await productService.getById(product$.id);
-    expect(found).toBe(null);
+    await productService.removeById(product$._id);
+    expect(await productService.getById(product$._id)).toBe(null);
   });
 
   it('should throw error for dublicate code', async () => {
     await productService.create({
       title: 'Product',
-      category: category.id,
+      category: category._id,
       code: 'product-1',
       price: 300,
     });
     await expect(
       productService.create({
         title: 'Product',
-        category: category.id,
+        category: category._id,
         code: 'product-1',
         price: 300,
       }),
@@ -123,18 +122,6 @@ describe('Product service', () => {
   });
 
   it('should get all products', async () => {
-    await productService.create({
-      title: 'Product',
-      category: category.id,
-      code: 'product-1',
-      price: 300,
-    });
-    await productService.create({
-      title: 'Product',
-      category: category.id,
-      code: 'product-2',
-      price: 300,
-    });
-    expect((await productService.find()).length).toBe(2);
+    expect(await productService.find()).toHaveLength(0);
   });
 });

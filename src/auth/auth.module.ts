@@ -9,7 +9,7 @@ import { JwtStrategy } from './strategies';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { RolesController } from './roles.controller';
-import { RolesService } from './roles.service';
+import { RoleService } from './role.service';
 
 import { RoleRef, RoleSchema } from './schemas';
 
@@ -38,6 +38,6 @@ import { RoleRef, RoleSchema } from './schemas';
     UserModule,
   ],
   controllers: [AuthController, RolesController],
-  providers: [AuthService, JwtStrategy, RolesService],
+  providers: [AuthService, JwtStrategy, RoleService],
 })
 export class AuthModule {}
