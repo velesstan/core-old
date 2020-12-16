@@ -6,13 +6,13 @@ import { Model } from 'mongoose';
 import { UserService } from '../user';
 
 import { SignInDto } from './dto';
-import { IRoleModel } from './interfaces';
+import { RoleModel } from './interfaces';
 import { RoleRef } from './schemas';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(RoleRef) private readonly rolesModel: Model<IRoleModel>,
+    @InjectModel(RoleRef) private readonly rolesModel: Model<RoleModel>,
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
