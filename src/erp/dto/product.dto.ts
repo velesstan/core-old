@@ -56,10 +56,10 @@ export class UpdateProductDto implements Product {
   @IsPositive()
   @Transform((n) => Number(n))
   readonly price: number;
-  @IsNumber()
-  @Min(0)
-  @Max(100)
-  @Transform((n) => Number(n))
-  @IsOptional()
-  readonly discount?: number;
+  // @IsNumber()
+  // @Min(0)
+  // @Max(100)
+  // @Transform((n) => Number(n))
+  // @IsOptional()
+  // readonly discount?: number;
 }

@@ -4,13 +4,13 @@ import { Model } from 'mongoose';
 
 import { ProductRef } from './schemas';
 import { Product, ProductModel } from './interfaces';
-import { CreateProductDto, UpdateProductDto } from './dto';
+import { UpdateProductDto } from './dto';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectModel(ProductRef) private readonly productModel: Model<ProductModel>,
-  ) { }
+  ) {}
 
   async find(): Promise<ProductModel[]> {
     return await this.productModel.find({}).populate('category').exec();
@@ -25,10 +25,7 @@ export class ProductService {
       await new this.productModel(product).populate('category').save()
     ).execPopulate();
   }
-  async updateById(
-    id: string,
-    product: UpdateProductDto,
-  ): Promise<ProductModel> {
+  async updateById(id: string, product: Product): Promise<ProductModel> {
     return await this.productModel
       .findByIdAndUpdate(id, product, {
         new: true,
