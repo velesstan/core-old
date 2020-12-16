@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 
 import { UserRef, UserSchema } from './schemas';
 import { UserService } from './user.service';
-import { use } from 'passport';
 
 let mongod: MongoMemoryServer;
 
