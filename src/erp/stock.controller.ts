@@ -6,12 +6,19 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
+import { JwtAuthGuard } from '../auth/guards';
 
 import { StockModel } from './interfaces';
 import { CreateStockDto, UpdateStockDto } from './dto';
 import { StockService } from './stock.service';
 
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiTags('stocks')
 @Controller('/stocks')
 export class StockController {
   constructor(private readonly stockService: StockService) {}

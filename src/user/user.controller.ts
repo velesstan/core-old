@@ -1,8 +1,15 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
+import { JwtAuthGuard } from '../auth/guards';
+
 import { CreateUserDto } from './dto';
 import { UserModel } from './interfaces';
 import { UserService } from './user.service';
 
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

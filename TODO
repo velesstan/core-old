@@ -1,22 +1,9 @@
 C:\Users\Evgheni\Desktop\velesstan-core\node_modules\.cache\mongodb-memory-server\mongodb-binaries\4.0.14\mongod.exe
 
-CHECK
-
-AUTH - done
-User - done
-ERP
-  - product 
-  - stock
-  - category
-  - waybill (check dto & types improvement)
-Transaction
-
 
 MODIFY ENV constants (auth)
 
 ADD ROLE-based auth
-Check api endpoints guard
-if there users exists -> dont create draft user
 
 DOCKER COMPOSE & ENV -> drive
 
