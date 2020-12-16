@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-export const RoleRef = 'RolesRef';
+export const RoleRef = 'RoleRef';
 
 export const RoleSchema = new Schema(
   {
