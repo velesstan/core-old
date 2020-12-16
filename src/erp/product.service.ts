@@ -5,14 +5,18 @@ import { Model } from 'mongoose';
 import { ProductRef } from './schemas';
 import { Product, ProductModel } from './interfaces';
 
+type FindQuery = {
+  readonly category?: string;
+};
+
 @Injectable()
 export class ProductService {
   constructor(
     @InjectModel(ProductRef) private readonly productModel: Model<ProductModel>,
   ) {}
 
-  async find(): Promise<ProductModel[]> {
-    return await this.productModel.find({}).populate('category').exec();
+  async find(query: FindQuery): Promise<ProductModel[]> {
+    return await this.productModel.find(query).populate('category').exec();
   }
 
   async getById(id: string): Promise<ProductModel | null> {

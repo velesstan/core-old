@@ -122,6 +122,6 @@ describe('Product service', () => {
   });
 
   it('should get all products', async () => {
-    expect(await productService.find()).toHaveLength(0);
+    expect(await productService.find({})).toHaveLength(0);
   });
 });

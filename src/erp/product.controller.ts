@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
+
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/guards';
@@ -25,8 +27,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('/')
-  async findAll(): Promise<ProductModel[]> {
-    return await this.productService.find();
+  async find(@Query() params: any): Promise<ProductModel[]> {
+    return await this.productService.find(params);
   }
   @Post('/')
   async createProduct(
