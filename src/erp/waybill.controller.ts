@@ -9,7 +9,7 @@ export class WaybillController {
 
   @Get('/')
   async getWaybills() {
-    return [];
+    return await this.waybillService.find();
   }
 
   @Post('/')

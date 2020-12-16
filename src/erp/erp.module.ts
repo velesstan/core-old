@@ -16,13 +16,14 @@ import {
 
 import { ProductService } from './product.service';
 import { CategoryService } from './category.service';
+import { WaybillService } from './waybill.service';
+import { TransactionService } from './transaction.service';
 import { StockService } from './stock.service';
 import { StockController } from './stock.controller';
 import { ProductController } from './product.controller';
 import { CategoryController } from './category.controller';
 import { WaybillController } from './waybill.controller';
-import { WaybillService } from './waybill.service';
-import { TransactionService } from './transaction.service';
+import { TransactionController } from './transaction.controller';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { TransactionService } from './transaction.service';
     ProductController,
     CategoryController,
     WaybillController,
+    TransactionController,
   ],
   providers: [
     ProductService,

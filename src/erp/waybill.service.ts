@@ -33,12 +33,32 @@ export class WaybillService {
     }).save();
   }
 
+  async find(): Promise<WaybillModel[]> {
+    return await this.waybillModel
+      .find({})
+      .sort('-createdAt')
+      .populate([
+        {
+          path: 'transactions',
+          populate: [
+            {
+              path: 'product',
+              populate: 'category',
+            },
+          ],
+        },
+        {
+          path: 'stock',
+        },
+      ])
+      .exec();
+  }
+
   async process(waybill: CreateWaybillDto): Promise<any> {
     const { action, products, destination, source } = waybill;
     switch (action) {
       case WayBillAction.BUY:
       case WayBillAction.IMPORT: {
-        console.log('Income transaction');
         const nextIncomeWaybillTitle = await this.stockService.nextWaybillIncomeNumber(
           destination,
         );
@@ -56,13 +76,12 @@ export class WaybillService {
           type: WaybillType.INCOME,
           stock: destination,
           action,
-          transactions,
+          transactions: transactions.map((t) => t._id),
         });
         return waybill;
       }
       case WayBillAction.SELL:
       case WayBillAction.UTILIZATION: {
-        console.log('Outcome transaction');
         const nextOutcomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
           source,
         );
@@ -80,7 +99,7 @@ export class WaybillService {
           type: WaybillType.OUTCOME,
           stock: source,
           action,
-          transactions,
+          transactions: transactions.map((t) => t._id),
         });
         return waybill;
       }

@@ -2,11 +2,10 @@ C:\Users\Evgheni\Desktop\velesstan-core\node_modules\.cache\mongodb-memory-serve
 
 
 MODIFY ENV constants (auth)
-
 ADD ROLE-based auth
-
 DOCKER COMPOSE & ENV -> drive
-
 REDUCE -: percents or value
-
+PRODUCT Transaction snapshot (price)
 set server time & sync
+
+

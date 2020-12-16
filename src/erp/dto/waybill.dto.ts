@@ -13,11 +13,11 @@ import { Type } from 'class-transformer';
 
 import { WayBillAction } from '../interfaces/waybill.interface';
 
-class ProductSnapshotDto {
-  @IsNumber()
-  @IsPositive()
-  readonly price: number;
-}
+// class ProductSnapshotDto {
+//   @IsNumber()
+//   @IsPositive()
+//   readonly price: number;
+// }
 
 class ProductDto {
   @IsString()
@@ -26,9 +26,9 @@ class ProductDto {
   @IsNumber()
   @IsPositive()
   readonly quantity: number;
-  @ValidateNested()
-  @Type(() => ProductSnapshotDto)
-  readonly snapshot: ProductSnapshotDto;
+  // @ValidateNested()
+  // @Type(() => ProductSnapshotDto)
+  // readonly snapshot: ProductSnapshotDto;
 }
 
 export class CreateWaybillDto {

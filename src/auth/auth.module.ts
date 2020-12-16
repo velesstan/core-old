@@ -26,7 +26,7 @@ import { RoleRef, RoleSchema } from './schemas';
         return {
           secret: configService.get<string>('APP_JWT_TOKEN_SECRET'),
           signOptions: {
-            expiresIn: configService.get<number>('APP_JWT_TOKEN_EXPIRY') * 3600,
+            expiresIn: configService.get<number>('APP_JWT_TOKEN_EXPIRY') * 60,
           },
         };
       },

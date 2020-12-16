@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import dayjs from 'dayjs';
 
 import {
   CategoryRef,
@@ -102,5 +103,53 @@ describe('Transaction service', () => {
       stock: stock._id,
     });
     expect($transaction.createdAt).toBeDefined();
+  });
+
+  it('should count stock transactions for given date range', async () => {
+    const product_2 = await productService.create({
+      category: category._id,
+      title: 'TestProduct',
+      code: 'test-2',
+      price: 120,
+    });
+    await transactionService.create({
+      product: product._id,
+      quantity: 3,
+      stock: stock._id,
+    });
+    await transactionService.create({
+      product: product_2._id,
+      quantity: 3,
+      stock: stock._id,
+    });
+    await transactionService.create({
+      product: product_2._id,
+      quantity: -1,
+      stock: stock._id,
+    });
+    const result = await transactionService.count({
+      stock: stock._id,
+      start: dayjs().startOf('day').toDate(),
+      end: dayjs().endOf('day').toDate(),
+    });
+    expect(result.length).toBe(2);
+    expect(result[0]).toMatchObject({
+      startBalance: 0,
+      endBalance: 2,
+      totalIncome: 3,
+      totalOutcome: -1,
+      product: {
+        code: 'test-2',
+      },
+    });
+    expect(result[1]).toMatchObject({
+      startBalance: 0,
+      endBalance: 3,
+      totalIncome: 3,
+      totalOutcome: 0,
+      product: {
+        code: 'test-1',
+      },
+    });
   });
 });
