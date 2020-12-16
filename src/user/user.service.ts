@@ -8,11 +8,9 @@ import { CreateUserDto, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(UserRef) private userModel: Model<UserModel>) {
-    this.bootstrap();
-  }
+  constructor(@InjectModel(UserRef) private userModel: Model<UserModel>) {}
 
-  async bootstrap() {
+  async bootstrap(): Promise<void> {
     const draftUser = await this.userModel
       .findOne({
         email: 'admin@veles.services',
