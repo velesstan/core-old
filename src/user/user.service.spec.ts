@@ -77,9 +77,12 @@ describe('User service', () => {
     });
   });
 
-  it("should remove user by id", async () => {
-    const $user = await userService.create({ email: "email", password: "password" })
+  it('should remove user by id', async () => {
+    const $user = await userService.create({
+      email: 'email',
+      password: 'password',
+    });
     await userService.removeById($user._id);
-    expect(await userService.findOneByEmail("email")).toBe(null);
-  })
+    expect(await userService.findOneByEmail('email')).toBe(null);
+  });
 });
