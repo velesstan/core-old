@@ -4,10 +4,7 @@ import { Model } from 'mongoose';
 
 import { ProductRef } from './schemas';
 import { Product, ProductModel } from './interfaces';
-
-type FindQuery = {
-  readonly category?: string;
-};
+import { FindProductDto } from './dto';
 
 @Injectable()
 export class ProductService {
@@ -15,7 +12,7 @@ export class ProductService {
     @InjectModel(ProductRef) private readonly productModel: Model<ProductModel>,
   ) {}
 
-  async find(query: FindQuery): Promise<ProductModel[]> {
+  async find(query: FindProductDto): Promise<ProductModel[]> {
     return await this.productModel.find(query).populate('category').exec();
   }
 

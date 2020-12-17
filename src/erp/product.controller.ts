@@ -15,7 +15,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards';
 
 import { ProductModel } from './interfaces';
-import { CreateProductDto, UpdateProductDto } from './dto';
+import { CreateProductDto, FindProductDto, UpdateProductDto } from './dto';
 
 import { ProductService } from './product.service';
 
@@ -27,7 +27,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('/')
-  async find(@Query() params: any): Promise<ProductModel[]> {
+  async find(@Query() params: FindProductDto): Promise<ProductModel[]> {
     return await this.productService.find(params);
   }
   @Post('/')

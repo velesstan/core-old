@@ -6,7 +6,7 @@ ADD ROLE-based auth
 DOCKER COMPOSE & ENV -> drive
 REDUCE -: percents or value
 PRODUCT Transaction snapshot (price)
-set server time & sync
+set server time & sync ( cp /usr/share/zoneinfo/Europe/Chisinau /etc/localtime )
 
 
 QUERY DTO
