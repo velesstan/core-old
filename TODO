@@ -10,3 +10,8 @@ set server time & sync ( cp /usr/share/zoneinfo/Europe/Chisinau /etc/localtime )
 
 
 QUERY DTO
+
+
+MONGODUMP 
+    docker-compose exec -T database sh -c 'mongodump --archive -d DBNAME -u USER -p PASSWORD --authenticationDatabase admin' > db.dump
+    docker-compose exec -T database sh -c 'mongorestore --archive -u USER -p PASSWORD' < db.dump
