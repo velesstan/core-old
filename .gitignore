@@ -3,7 +3,7 @@
 /node_modules
 
 # env
-.env
+app.env
 
 # mongodb
 mongodb

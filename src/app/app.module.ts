@@ -14,7 +14,7 @@ import { ERPModule } from '../erp';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['./.env'],
+      envFilePath: ['app.env'],
       validationSchema: ENV_SCHEMA,
       load: [CONFIG],
       validationOptions: {
