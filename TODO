@@ -15,3 +15,6 @@ QUERY DTO
 MONGODUMP 
     docker-compose exec -T database sh -c 'mongodump --archive -d DBNAME -u USER -p PASSWORD --authenticationDatabase admin' > db.dump
     docker-compose exec -T database sh -c 'mongorestore --archive -u USER -p PASSWORD' < db.dump
+
+Script -> import all residues
+Script -> export all products
