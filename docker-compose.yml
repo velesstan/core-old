@@ -10,7 +10,7 @@ services:
     restart: always
     ports:
       - 3000:3000
-    env_file: ./.env
+    env_file: app.env
     depends_on:
       - database
   database:
@@ -20,6 +20,6 @@ services:
       - ./mongod.conf:/etc/mongod.conf
       - ./mongodb:/data/db
     command: mongod --config /etc/mongod.conf
-    env_file: ./.env
+    env_file: app.env
     ports:
       - '27017:27017'
