@@ -4,19 +4,36 @@ import puppeteer, { PDFOptions } from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
 
+import { WaybillModel } from '../erp/interfaces';
+
 @Injectable()
 export class DocumentService {
   constructor() {}
 
-  async makeInvoice() {
+  async makeInvoice(invoice: WaybillModel) {
+    handlebars.registerHelper('incremented', (index) => {
+      return index + 1;
+    });
     const templateHTML = fs.readFileSync(
       path.join(process.cwd(), 'src', 'document', 'templates', 'invoice.html'),
       'utf-8',
     );
     const template = handlebars.compile(templateHTML);
-    const html = template({});
+    const html = template({
+      invoiceDate: invoice.createdAt.toLocaleDateString(),
+      invoiceNumber: invoice.title,
+      invoiceStock: invoice.stock,
+      items: invoice.toObject().transactions.map((t) => ({
+        product: t.product,
+        quantity: t.quantity,
+        total: (t.product as any).price * t.quantity,
+      })),
+      subtotal: invoice.transactions.reduce(
+        (acc, t) => (acc += (t.product as any).price * t.quantity),
+        0,
+      ),
+    });
 
-    const pdfPath = path.join(`some-invoice.pdf`);
     const options = {
       width: '1230px',
       format: 'A4',
@@ -28,7 +45,6 @@ export class DocumentService {
         bottom: '30px',
       },
       printBackground: true,
-      path: pdfPath,
     };
 
     const browser = await puppeteer.launch({
@@ -37,7 +53,8 @@ export class DocumentService {
     });
     const page = await browser.newPage();
     await page.setContent(html);
-    await page.pdf(options as PDFOptions);
+    const pdfFile = await page.pdf(options as PDFOptions);
     await browser.close();
+    return pdfFile;
   }
 }

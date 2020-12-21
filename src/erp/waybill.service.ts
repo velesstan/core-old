@@ -33,6 +33,26 @@ export class WaybillService {
     }).save();
   }
 
+  async findById(id: string): Promise<WaybillModel> {
+    return await this.waybillModel
+      .findById(id)
+      .populate([
+        {
+          path: 'transactions',
+          populate: [
+            {
+              path: 'product',
+              populate: 'category',
+            },
+          ],
+        },
+        {
+          path: 'stock',
+        },
+      ])
+      .exec();
+  }
+
   async find(query: FindWaybillDto): Promise<WaybillModel[]> {
     return await this.waybillModel
       .find(query)

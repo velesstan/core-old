@@ -23,5 +23,6 @@ export interface Waybill {
   readonly transactions: Transaction[]; // transactions with snapshot
 }
 export interface WaybillModel extends Waybill, Document {
+  readonly createdAt: Date;
   readonly transactions: TransactionModel[];
 }

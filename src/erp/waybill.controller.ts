@@ -1,7 +1,19 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { CreateWaybillDto, FindWaybillDto } from './dto';
+import {
+  Body,
+  Controller,
+  Get,
+  Header,
+  Param,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
+import { Response } from 'express';
+import { Readable } from 'stream';
 
 import { DocumentService } from '../document';
+
+import { CreateWaybillDto, FindWaybillDto } from './dto';
 import { WaybillService } from './waybill.service';
 
 @Controller('waybills')
@@ -24,11 +36,13 @@ export class WaybillController {
     return newWaybill;
   }
 
-  @Post('/print/:id')
-  async printWaybill(@Param('id') id: string) {
-    console.log('ID: ', id);
-    const waybill = await this.waybillService.find({ _id: id });
-    await this.documentService.makeInvoice();
-    return waybill;
+  @Get('/print/:id')
+  @Header('Content-Type', 'application/pdf')
+  @Header('Content-Disposition', 'attachment;')
+  async printWaybill(@Param('id') id: string, @Res() response: Response) {
+    const waybill = await this.waybillService.findById(id);
+    Readable.from(await this.documentService.makeInvoice(waybill)).pipe(
+      response,
+    );
   }
 }
