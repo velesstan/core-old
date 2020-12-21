@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-import { WayBillAction } from '../interfaces/waybill.interface';
+import { WayBillAction } from '../../interfaces/waybill.interface';
 
 // class ProductSnapshotDto {
 //   @IsNumber()

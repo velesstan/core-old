@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { DocumentModule, DocumentService } from '../document';
+
 import {
   CategoryRef,
   CategorySchema,
@@ -34,6 +36,7 @@ import { TransactionController } from './transaction.controller';
       { name: TransactionRef, schema: TransactionSchema },
       { name: WaybillRef, schema: WaybillSchema },
     ]),
+    DocumentModule,
   ],
   controllers: [
     StockController,
@@ -48,6 +51,7 @@ import { TransactionController } from './transaction.controller';
     StockService,
     WaybillService,
     TransactionService,
+    DocumentService,
   ],
 })
 export class ERPModule {}

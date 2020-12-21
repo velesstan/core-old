@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { UserModule } from '../user';
 import { AuthModule } from '../auth';
 import { ERPModule } from '../erp';
+import { DocumentModule } from '../document';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ERPModule } from '../erp';
     UserModule,
     AuthModule,
     ERPModule,
+    DocumentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

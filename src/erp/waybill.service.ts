@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { CreateWaybillDto } from './dto';
+import { CreateWaybillDto, FindWaybillDto } from './dto';
 import {
   Waybill,
   WayBillAction,
@@ -33,9 +33,9 @@ export class WaybillService {
     }).save();
   }
 
-  async find(): Promise<WaybillModel[]> {
+  async find(query: FindWaybillDto): Promise<WaybillModel[]> {
     return await this.waybillModel
-      .find({})
+      .find(query)
       .sort('-createdAt')
       .populate([
         {

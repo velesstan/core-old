@@ -27,8 +27,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('/')
-  async find(@Query() params: FindProductDto): Promise<ProductModel[]> {
-    return await this.productService.find(params);
+  async find(@Query() query: FindProductDto): Promise<ProductModel[]> {
+    return await this.productService.find(query);
   }
   @Post('/')
   async createProduct(
