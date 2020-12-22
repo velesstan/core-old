@@ -8,8 +8,6 @@ import { WaybillModel } from '../erp/interfaces';
 
 @Injectable()
 export class DocumentService {
-  constructor() {}
-
   async makeInvoice(invoice: WaybillModel) {
     handlebars.registerHelper('incremented', (index) => {
       return index + 1;

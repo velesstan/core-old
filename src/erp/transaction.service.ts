@@ -5,13 +5,7 @@ import { ObjectId } from 'mongodb';
 
 import { Transaction, TransactionModel } from './interfaces';
 import { TransactionRef } from './schemas';
-
-type ResidueParams = {
-  readonly stock: string;
-  readonly start: Date;
-  readonly end: Date;
-};
-
+import { FindTransactionsDto } from './dto';
 @Injectable()
 export class TransactionService {
   constructor(
@@ -23,15 +17,19 @@ export class TransactionService {
     return await new this.transactionModel(transaction).save();
   }
 
-  async count(params: ResidueParams) {
-    const { stock, start, end } = params;
+  async count(query: FindTransactionsDto) {
+    const { stock, start, end, code } = query;
     const aggregated = await this.transactionModel.aggregate([
       {
         $match: {
-          stock: new ObjectId(stock),
-          createdAt: {
-            $lte: end,
-          },
+          ...(stock ? { stock: new ObjectId(stock) } : {}),
+          ...(end
+            ? {
+                createdAt: {
+                  $lte: end,
+                },
+              }
+            : {}),
         },
       },
       {
@@ -50,7 +48,7 @@ export class TransactionService {
               $cond: [
                 {
                   $and: [
-                    { $gte: ['$createdAt', start] },
+                    ...(start ? [{ $gte: ['$createdAt', start] }] : []),
                     { $gt: ['$quantity', 0] },
                   ],
                 },
@@ -64,6 +62,7 @@ export class TransactionService {
               $cond: [
                 {
                   $and: [
+                    ...(start ? [{ $gte: ['$createdAt', start] }] : []),
                     { $gte: ['$createdAt', start] },
                     { $lt: ['$quantity', 0] },
                   ],
@@ -85,6 +84,11 @@ export class TransactionService {
       },
       {
         $unwind: '$product',
+      },
+      {
+        $match: {
+          ...(code ? { 'product.code': new RegExp(code.trim(), 'ig') } : {}),
+        },
       },
       {
         $lookup: {
