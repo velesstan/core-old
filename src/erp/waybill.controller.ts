@@ -3,8 +3,6 @@ import {
   Controller,
   Get,
   Header,
-  HttpException,
-  HttpStatus,
   Param,
   Post,
   Query,
@@ -43,12 +41,8 @@ export class WaybillController {
   @Header('Content-Disposition', 'attachment;')
   async printWaybill(@Param('id') id: string, @Res() response: Response) {
     const waybill = await this.waybillService.findById(id);
-    try {
-      Readable.from(await this.documentService.makeInvoice(waybill)).pipe(
-        response,
-      );
-    } catch (e) {
-      return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    Readable.from(await this.documentService.makeInvoice(waybill)).pipe(
+      response,
+    );
   }
 }
