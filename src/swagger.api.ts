@@ -2,7 +2,7 @@ import { DocumentBuilder } from '@nestjs/swagger';
 
 const options = new DocumentBuilder()
   .setTitle('Veles Services Node.js API docs')
-  .setVersion('4.0.0')
+  .setVersion('4.0.1')
   .addServer('/api')
   .addTag('users')
   .addTag('auth')

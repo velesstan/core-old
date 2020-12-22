@@ -3,6 +3,8 @@ import {
   Controller,
   Get,
   Header,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Query,
@@ -40,9 +42,16 @@ export class WaybillController {
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment;')
   async printWaybill(@Param('id') id: string, @Res() response: Response) {
-    const waybill = await this.waybillService.findById(id);
-    Readable.from(await this.documentService.makeInvoice(waybill)).pipe(
-      response,
-    );
+    try {
+      const waybill = await this.waybillService.findById(id);
+      Readable.from(await this.documentService.makeInvoice(waybill)).pipe(
+        response,
+      );
+    } catch (e) {
+      throw new HttpException(
+        'Error creating generating invoice PDF.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
