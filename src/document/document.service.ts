@@ -43,15 +43,18 @@ export class DocumentService {
       printBackground: true,
     };
 
-    const browser = await puppeteer.launch({
+    const browserOptions = {
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
       ],
       headless: true,
-      executablePath: '/usr/bin/google-chrome-stable',
-    });
+    };
+    if (process.env.NODE_ENV === 'production') {
+      browserOptions['executablePath'] = '/usr/bin/google-chrome-stable';
+    }
+    const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
     await page.setContent(html);
     const pdfFile = await page.pdf(options as PDFOptions);
