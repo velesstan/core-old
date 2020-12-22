@@ -63,13 +63,10 @@ export default `<!DOCTYPE html>
                       №
                     </th>
                     <th class="border-0 text-uppercase small font-weight-bold">
-                      Категория
+                      КОД
                     </th>
                     <th class="border-0 text-uppercase small font-weight-bold">
-                      Название
-                    </th>
-                    <th class="border-0 text-uppercase small font-weight-bold">
-                      Артикул
+                      Наименование
                     </th>
                     <th class="border-0 text-uppercase small font-weight-bold">
                       Количество
@@ -86,12 +83,11 @@ export default `<!DOCTYPE html>
                   {{#each items}}
                   <tr>
                     <td>{{incremented @index}}</td>
-                    <td>{{product.category.title}}</td>
-                    <td>{{product.title}}</td>
                     <td>{{product.code}}</td>
+                    <td>{{product.title}}</td>
                     <td>{{quantity}} {{product.category.unit}}</td>
-                    <td>{{product.price}}</td>
-                    <td>{{total}}</td>
+                    <td>{{toFixed product.price}}</td>
+                    <td>{{toFixed total}}</td>
                   </tr>
                   {{/each}}
                 </tbody>
@@ -99,12 +95,12 @@ export default `<!DOCTYPE html>
                   <tr>
                     <th
                       class="text-right text-uppercase font-weight-bold"
-                      colspan="6"
+                      colspan="5"
                     >
                       Итого:
                     </th>
                     <td class="text-uppercase font-weight-bold">
-                      {{subtotal}}
+                      {{toFixed subtotal}}
                     </td>
                   </tr>
                 </tfoot>

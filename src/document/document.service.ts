@@ -14,6 +14,9 @@ export class DocumentService {
     handlebars.registerHelper('incremented', (index) => {
       return index + 1;
     });
+    handlebars.registerHelper('toFixed', function (distance) {
+      return distance.toFixed(2);
+    });
     const template = handlebars.compile(templateHTML);
     const html = template({
       invoiceDate: invoice.createdAt.toLocaleDateString(),
