@@ -44,8 +44,13 @@ export class DocumentService {
     };
 
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+      ],
       headless: true,
+      executablePath: '/usr/bin/google-chrome-stable',
     });
     const page = await browser.newPage();
     await page.setContent(html);
