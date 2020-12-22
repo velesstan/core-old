@@ -163,7 +163,7 @@ describe('Waybill service', () => {
       title: 'WB-1',
       transactions: transactions.map((t) => t._id),
     });
-    const waybills = await waybillService.find();
+    const waybills = await waybillService.find({});
     expect(waybills).toHaveLength(1);
     expect(waybills[0].toObject().transactions).toHaveLength(2);
     waybills[0].toObject().transactions.map((t, index) => {
