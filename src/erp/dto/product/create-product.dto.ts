@@ -24,12 +24,12 @@ export class CreateProductDto implements Product {
   @MaxLength(50)
   @Transform((v: string) => v.trim().replace(/^./, (c) => c.toUpperCase()))
   readonly title: string;
-  @IsNumber()
-  @IsPositive()
+  @IsNumber({}, { message: 'Розничая цена должна быть числом' })
+  @IsPositive({ message: 'Розничая цена должна быть положительным числом' })
   @Transform((n) => Number(n))
   readonly price_retail: number;
-  @IsNumber()
-  @IsPositive()
+  @IsNumber({}, { message: 'Оптовая цена должна быть числом' })
+  @IsPositive({ message: 'Оптовая цена должна быть положительным числом' })
   @Transform((n) => Number(n))
   readonly price_wholesale: number;
 }
