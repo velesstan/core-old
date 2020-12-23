@@ -19,7 +19,7 @@ export const ProductSchema = new Schema(
       ref: CategoryRef,
       required: true,
     },
-    price: {
+    price_retail: {
       type: Number,
       required: true,
     },

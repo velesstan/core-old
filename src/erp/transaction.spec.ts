@@ -79,7 +79,7 @@ describe('Transaction service', () => {
       category: category._id,
       title: 'TestProduct',
       code: 'test-1',
-      price: 100,
+      price_retail: 100,
     });
     stock = await stockService.create({
       title: 'Stock',
@@ -110,7 +110,7 @@ describe('Transaction service', () => {
       category: category._id,
       title: 'TestProduct',
       code: 'test-2',
-      price: 120,
+      price_retail: 120,
     });
     await transactionService.create({
       product: product._id,

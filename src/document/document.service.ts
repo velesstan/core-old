@@ -23,10 +23,10 @@ export class DocumentService {
       items: invoice.toObject().transactions.map((t) => ({
         product: t.product,
         quantity: t.quantity,
-        total: (t.product as any).price * t.quantity,
+        total: (t.product as any).price_retail * t.quantity,
       })),
       subtotal: invoice.transactions.reduce(
-        (acc, t) => (acc += (t.product as any).price * t.quantity),
+        (acc, t) => (acc += (t.product as any).price_retail * t.quantity),
         0,
       ),
     });
