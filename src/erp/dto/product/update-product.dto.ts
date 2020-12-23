@@ -28,4 +28,8 @@ export class UpdateProductDto implements Product {
   @IsPositive()
   @Transform((n) => Number(n))
   readonly price_retail: number;
+  @IsNumber()
+  @IsPositive()
+  @Transform((n) => Number(n))
+  readonly price_wholesale: number;
 }

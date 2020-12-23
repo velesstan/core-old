@@ -101,12 +101,14 @@ describe('Waybill service', () => {
       title: 'T-1',
       code: 't-1',
       price_retail: 100,
+      price_wholesale: 90,
     });
     const product_2 = await productService.create({
       category: category._id,
       title: 'T-2',
       code: 't-2',
       price_retail: 200,
+      price_wholesale: 190,
     });
     const transactions = await Promise.all(
       [product_1, product_2].map((p) =>
@@ -139,12 +141,14 @@ describe('Waybill service', () => {
       title: 'T-1',
       code: 't-1',
       price_retail: 100,
+      price_wholesale: 90,
     });
     const product_2 = await productService.create({
       category: category._id,
       title: 'T-2',
       code: 't-2',
       price_retail: 200,
+      price_wholesale: 190,
     });
     const products = [product_1, product_2];
     const transactions = await Promise.all(
@@ -188,12 +192,14 @@ describe('Waybill service', () => {
       title: 'T-1',
       code: 't-1',
       price_retail: 100,
+      price_wholesale: 90,
     });
     const product_2 = await productService.create({
       category: category._id,
       title: 'T-2',
       code: 't-2',
       price_retail: 200,
+      price_wholesale: 190,
     });
     const waybill = await waybillService.process({
       action: WayBillAction.BUY,
@@ -218,12 +224,14 @@ describe('Waybill service', () => {
       title: 'T-1',
       code: 't-1',
       price_retail: 100,
+      price_wholesale: 90,
     });
     const product_2 = await productService.create({
       category: category._id,
       title: 'T-2',
       code: 't-2',
       price_retail: 200,
+      price_wholesale: 190,
     });
     const waybill = await waybillService.process({
       action: WayBillAction.SELL,

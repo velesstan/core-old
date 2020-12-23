@@ -72,7 +72,7 @@ export default `<!DOCTYPE html>
                       Количество
                     </th>
                     <th class="border-0 text-uppercase small font-weight-bold">
-                      Цена
+                      Цена розн.
                     </th>
                     <th class="border-0 text-uppercase small font-weight-bold">
                       Всего

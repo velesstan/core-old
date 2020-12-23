@@ -65,11 +65,13 @@ describe('Product service', () => {
       category: category._id,
       code: 'product-1',
       price_retail: 300,
+      price_wholesale: 290,
     });
     expect(product$).toMatchObject({
       title: 'Product',
       code: 'product-1',
       price_retail: 300,
+      price_wholesale: 290,
     });
   });
 
@@ -79,17 +81,20 @@ describe('Product service', () => {
       category: category._id,
       code: 'product-1',
       price_retail: 300,
+      price_wholesale: 290,
     });
     product$ = await productService.updateById(product$._id, {
       title: 'Product',
       category: category._id,
       code: 'product-2',
       price_retail: 330,
+      price_wholesale: 300,
     });
     expect(product$).toMatchObject({
       title: 'Product',
       code: 'product-2',
       price_retail: 330,
+      price_wholesale: 300,
     });
   });
 
@@ -99,6 +104,7 @@ describe('Product service', () => {
       category: category._id,
       code: 'product-1',
       price_retail: 300,
+      price_wholesale: 290,
     });
     await productService.removeById(product$._id);
     expect(await productService.getById(product$._id)).toBe(null);
@@ -110,6 +116,7 @@ describe('Product service', () => {
       category: category._id,
       code: 'product-1',
       price_retail: 300,
+      price_wholesale: 290,
     });
     await expect(
       productService.create({
@@ -117,6 +124,7 @@ describe('Product service', () => {
         category: category._id,
         code: 'product-1',
         price_retail: 300,
+        price_wholesale: 290,
       }),
     ).rejects.toThrow();
   });

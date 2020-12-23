@@ -10,15 +10,7 @@ import { FindProductDto } from './dto';
 export class ProductService {
   constructor(
     @InjectModel(ProductRef) private readonly productModel: Model<ProductModel>,
-  ) {
-    this.renameField();
-  }
-
-  async renameField() {
-    await this.productModel
-      .update({}, { $rename: { price: 'price_retail' } }, { multi: true })
-      .exec();
-  }
+  ) {}
 
   async find(query: FindProductDto): Promise<ProductModel[]> {
     return await this.productModel.find(query).populate('category').exec();

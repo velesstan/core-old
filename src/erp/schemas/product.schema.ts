@@ -23,6 +23,11 @@ export const ProductSchema = new Schema(
       type: Number,
       required: true,
     },
+    price_wholesale: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
   },
   {
     timestamps: true,
