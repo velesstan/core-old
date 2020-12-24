@@ -26,6 +26,8 @@ import { ProductController } from './product.controller';
 import { CategoryController } from './category.controller';
 import { WaybillController } from './waybill.controller';
 import { TransactionController } from './transaction.controller';
+import { ExportService } from './export.service';
+import { ExportController } from './export.controller';
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import { TransactionController } from './transaction.controller';
     CategoryController,
     WaybillController,
     TransactionController,
+    ExportController,
   ],
   providers: [
     ProductService,
@@ -52,6 +55,7 @@ import { TransactionController } from './transaction.controller';
     WaybillService,
     TransactionService,
     DocumentService,
+    ExportService,
   ],
 })
 export class ERPModule {}

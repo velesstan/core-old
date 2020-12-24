@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import handlebars from 'handlebars';
 import puppeteer, { PDFOptions } from 'puppeteer';
+import handlebars from 'handlebars';
+import xlsx from 'xlsx';
 
 import templateHTML from './templates/invoice';
 
-import { WaybillModel } from '../erp/interfaces';
+import { ProductModel, WaybillModel } from '../erp/interfaces';
 
 @Injectable()
 export class DocumentService {
@@ -61,5 +62,34 @@ export class DocumentService {
     const pdfFile = await page.pdf(options as PDFOptions);
     await browser.close();
     return pdfFile;
+  }
+
+  exportProductsToExcel(data: any): Buffer {
+    const wb = xlsx.utils.book_new();
+    for (const categoryIndex in data) {
+      const categoryTitle = data[categoryIndex].category.title;
+      const products = data[categoryIndex].products;
+      wb.SheetNames.push(categoryTitle);
+      const ws = xlsx.utils.aoa_to_sheet([
+        [
+          '№',
+          'Код',
+          'Наименование',
+          'Цена опт.',
+          'Цена розн.',
+          'Остаток',
+          `Всего: ${products.length}`,
+        ],
+        ...products.map((p: ProductModel, index: number) => [
+          index + 1,
+          p.code,
+          p.title,
+          p.price_wholesale,
+          p.price_retail,
+        ]),
+      ]);
+      wb.Sheets[categoryTitle] = ws;
+    }
+    return xlsx.write(wb, { bookType: 'xlsx', type: 'buffer' });
   }
 }
