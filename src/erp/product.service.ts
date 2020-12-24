@@ -13,7 +13,11 @@ export class ProductService {
   ) {}
 
   async find(query: FindProductDto): Promise<ProductModel[]> {
-    return await this.productModel.find(query).populate('category').exec();
+    return await this.productModel
+      .find(query)
+      .sort({ code: 'ascending' })
+      .populate('category')
+      .exec();
   }
 
   async getById(id: string): Promise<ProductModel | null> {
