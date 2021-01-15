@@ -5,10 +5,11 @@ import { Model } from 'mongoose';
 import { CreateWaybillDto, FindWaybillDto } from './dto';
 import {
   Waybill,
-  WayBillAction,
+  WaybillAction,
   WaybillModel,
   WaybillType,
 } from './interfaces';
+import { ProductService } from './product.service';
 import { WaybillRef } from './schemas';
 import { StockService } from './stock.service';
 
@@ -20,6 +21,7 @@ export class WaybillService {
     @InjectModel(WaybillRef) private readonly waybillModel: Model<WaybillModel>,
     private readonly transactionService: TransactionService,
     private readonly stockService: StockService,
+    private readonly productService: ProductService,
   ) {}
 
   async create(waybill: Waybill): Promise<WaybillModel> {
@@ -77,8 +79,8 @@ export class WaybillService {
   async process(waybill: CreateWaybillDto): Promise<any> {
     const { action, products, destination, source } = waybill;
     switch (action) {
-      case WayBillAction.BUY:
-      case WayBillAction.IMPORT: {
+      case WaybillAction.BUY:
+      case WaybillAction.IMPORT: {
         const nextIncomeWaybillTitle = await this.stockService.nextWaybillIncomeNumber(
           destination,
         );
@@ -100,8 +102,8 @@ export class WaybillService {
         });
         return waybill;
       }
-      case WayBillAction.SELL:
-      case WayBillAction.UTILIZATION: {
+      case WaybillAction.SELL:
+      case WaybillAction.UTILIZATION: {
         const nextOutcomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
           source,
         );
@@ -122,6 +124,102 @@ export class WaybillService {
           transactions: transactions.map((t) => t._id),
         });
         return waybill;
+      }
+      case WaybillAction.MOVE: {
+        const nextOutcomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
+          source,
+        );
+        const nexIncomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
+          destination,
+        );
+        const outCometransactions = await Promise.all(
+          products.map((p) =>
+            this.transactionService.create({
+              product: p.product,
+              quantity: -p.quantity,
+              stock: source,
+            }),
+          ),
+        );
+        const outcomeWaybill = await this.create({
+          title: nextOutcomeWaybillTitle,
+          type: WaybillType.OUTCOME,
+          stock: source,
+          action,
+          transactions: outCometransactions.map((t) => t._id),
+        });
+
+        const incometransactions = await Promise.all(
+          products.map((p) =>
+            this.transactionService.create({
+              product: p.product,
+              quantity: p.quantity,
+              stock: destination,
+            }),
+          ),
+        );
+        const incomeWaybill = await this.create({
+          title: nexIncomeWaybillTitle,
+          type: WaybillType.INCOME,
+          stock: destination,
+          action,
+          transactions: incometransactions.map((t) => t._id),
+        });
+      }
+      case WaybillAction.PRODUCTION: {
+        console.log('PRODUCTS: ', products);
+        console.log('SOURCE: ', source);
+        console.log('DEST: ', destination);
+        const populatedProducts = await Promise.all(
+          products.map(async (p) => {
+            const product = await this.productService.getById(p.product);
+            return {
+              productId: product._id,
+              requires: product.requires,
+              quantity: p.quantity,
+            };
+          }),
+        );
+        console.log(populatedProducts);
+        // const nextOutcomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
+        //   source,
+        // );
+        // const nexIncomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
+        //   destination,
+        // );
+        // const outCometransactions = await Promise.all(
+        //   products.map((p) =>
+        //     this.transactionService.create({
+        //       product: p.product,
+        //       quantity: -p.quantity,
+        //       stock: source,
+        //     }),
+        //   ),
+        // );
+        // const outcomeWaybill = await this.create({
+        //   title: nextOutcomeWaybillTitle,
+        //   type: WaybillType.OUTCOME,
+        //   stock: source,
+        //   action,
+        //   transactions: outCometransactions.map((t) => t._id),
+        // });
+
+        // const incometransactions = await Promise.all(
+        //   products.map((p) =>
+        //     this.transactionService.create({
+        //       product: p.product,
+        //       quantity: p.quantity,
+        //       stock: destination,
+        //     }),
+        //   ),
+        // );
+        // const incomeWaybill = await this.create({
+        //   title: nexIncomeWaybillTitle,
+        //   type: WaybillType.INCOME,
+        //   stock: destination,
+        //   action,
+        //   transactions: incometransactions.map((t) => t._id),
+        // });
       }
     }
   }

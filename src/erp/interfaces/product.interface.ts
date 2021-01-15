@@ -6,6 +6,7 @@ export interface Product {
   readonly category: string;
   readonly price_retail: number;
   readonly price_wholesale: number;
+  readonly requires?: Array<{ product: string; quantity: number }>;
 }
 
 export interface ProductModel extends Product, Document {}

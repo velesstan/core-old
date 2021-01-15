@@ -5,6 +5,6 @@ export { Transaction, TransactionModel } from './transaction.interface';
 export {
   Waybill,
   WaybillModel,
-  WayBillAction,
+  WaybillAction,
   WaybillType,
 } from './waybill.interface';

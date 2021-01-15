@@ -28,6 +28,22 @@ export const ProductSchema = new Schema(
       required: false,
       default: 0,
     },
+    requires: {
+      type: [
+        {
+          product: {
+            type: Schema.Types.ObjectId,
+            ref: ProductRef,
+          },
+          quantity: {
+            type: Number,
+            required: 0,
+          },
+        },
+      ],
+      required: false,
+      default: [],
+    },
   },
   {
     timestamps: true,

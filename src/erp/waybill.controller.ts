@@ -34,7 +34,6 @@ export class WaybillController {
   async postWaybill(@Body() waybill: CreateWaybillDto) {
     const newWaybill = await this.waybillService.process(waybill);
     console.log('========NEW WAYBILL========');
-    console.log(newWaybill);
     return newWaybill;
   }
 

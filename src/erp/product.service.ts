@@ -16,7 +16,10 @@ export class ProductService {
     return await this.productModel
       .find(query)
       .sort({ code: 'ascending' })
-      .populate('category')
+      .populate([
+        { path: 'category' },
+        { path: 'requires', populate: 'product' },
+      ])
       .exec();
   }
 

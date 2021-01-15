@@ -17,4 +17,4 @@ MONGODUMP
     docker-compose exec -T database sh -c 'mongorestore --archive -u USER -p PASSWORD' < db.dump
 
 Script -> import all residues
-EXPORTING PRODUCTS to excel (pagination support)
+EXPORTING PRODUCTS to excel (pagination support)n+ sort code

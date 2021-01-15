@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-import { WayBillAction } from '../../interfaces/waybill.interface';
+import { WaybillAction } from '../../interfaces';
 
 // class ProductSnapshotDto {
 //   @IsNumber()
@@ -32,9 +32,9 @@ class ProductDto {
 }
 
 export class CreateWaybillDto {
-  @IsEnum(WayBillAction)
+  @IsEnum(WaybillAction)
   @IsNotEmpty()
-  readonly action: WayBillAction;
+  readonly action: WaybillAction;
   @IsString()
   @IsNotEmpty()
   @IsOptional()
