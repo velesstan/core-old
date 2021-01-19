@@ -18,22 +18,24 @@ export class DocumentService {
     });
     const template = handlebars.compile(templateHTML);
     const html = template({
-      invoiceDate: invoice.createdAt.toLocaleDateString(),
+      invoiceDate: invoice.createdAt.toLocaleDateString('ru-RU'),
       invoiceNumber: invoice.title,
-      invoiceStock: invoice.stock,
+      invoiceType: invoice.type === 'OUTCOME' ? 'Расходная' : 'Приходная',
+      invoiceStock: (invoice.stock as any).title,
       items: invoice.toObject().transactions.map((t) => ({
         product: t.product,
-        quantity: t.quantity,
-        total: (t.product as any).price_retail * t.quantity,
+        quantity: Math.abs(t.quantity),
+        total: (t.product as any).price_retail * Math.abs(t.quantity),
       })),
       subtotal: invoice.transactions.reduce(
-        (acc, t) => (acc += (t.product as any).price_retail * t.quantity),
+        (acc, t) =>
+          (acc += (t.product as any).price_retail * Math.abs(t.quantity)),
         0,
       ),
     });
 
     const options = {
-      width: '1230px',
+      width: '1000px',
       format: 'A4',
       headerTemplate: '<p></p>',
       footerTemplate: '<p></p>',
@@ -41,6 +43,7 @@ export class DocumentService {
       margin: {
         top: '10px',
         bottom: '30px',
+        left: '150px',
       },
       printBackground: true,
     };
