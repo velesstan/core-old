@@ -29,7 +29,7 @@ import { DocumentModule } from '../document';
         return {
           uri: configService.get('DB_CONNECTION'),
           useCreateIndex: true,
-          useFindAndModify: true,
+          useFindAndModify: false,
           useUnifiedTopology: true,
           useNewUrlParser: true,
         };
