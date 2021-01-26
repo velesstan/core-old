@@ -26,10 +26,10 @@ export class UpdateProductDto implements Product {
   readonly title: string;
   @IsNumber({}, { message: 'Розничая цена должна быть числом' })
   @IsPositive({ message: 'Розничая цена должна быть положительным числом' })
-  @Transform((n) => Number(n))
+  @Transform(({ value }) => Number(value))
   readonly price_retail: number;
   @IsNumber({}, { message: 'Оптовая цена должна быть числом' })
   @IsPositive({ message: 'Оптовая цена должна быть положительным числом' })
-  @Transform((n) => Number(n))
+  @Transform(({ value }) => Number(value))
   readonly price_wholesale: number;
 }
