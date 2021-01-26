@@ -13,11 +13,11 @@ export class FindTransactionsDto {
 
   @IsOptional()
   @IsDate()
-  @Transform((v: string) => dayjs.utc(v).startOf('day').toDate())
+  @Transform(({ value }) => dayjs.utc(value).startOf('day').toDate())
   readonly start?: Date;
 
   @IsOptional()
   @IsDate()
-  @Transform((v: string) => dayjs.utc(v).endOf('day').toDate())
+  @Transform(({ value }) => dayjs.utc(value).endOf('day').toDate())
   readonly end?: Date;
 }
