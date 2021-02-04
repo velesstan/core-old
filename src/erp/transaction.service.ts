@@ -17,11 +17,24 @@ export class TransactionService {
     return await new this.transactionModel(transaction).save();
   }
 
+  async disable(transactionId: string): Promise<TransactionModel> {
+    return await this.transactionModel.findByIdAndUpdate(transactionId, {
+      active: false,
+    });
+  }
+
+  async enable(transactionId: string): Promise<TransactionModel> {
+    return await this.transactionModel.findByIdAndUpdate(transactionId, {
+      active: true,
+    });
+  }
+
   async count(query: FindTransactionsDto) {
     const { stock, start, end, code } = query;
     const aggregated = await this.transactionModel.aggregate([
       {
         $match: {
+          active: true,
           ...(stock ? { stock: new ObjectId(stock) } : {}),
           ...(end
             ? {

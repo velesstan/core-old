@@ -7,4 +7,5 @@ export interface Transaction {
 }
 export interface TransactionModel extends Transaction, Document {
   readonly createdAt: Date;
+  readonly active: boolean;
 }

@@ -23,6 +23,10 @@ export const WaybillSchema = new Schema(
       type: String,
       required: true,
     },
+    active: {
+      type: Boolean,
+      default: true,
+    },
     transactions: {
       type: [
         {

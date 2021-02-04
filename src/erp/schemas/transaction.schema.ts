@@ -26,4 +26,8 @@ export const TransactionSchema = new Schema({
     type: Date,
     default: () => new Date(),
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });

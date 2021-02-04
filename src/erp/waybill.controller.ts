@@ -53,4 +53,14 @@ export class WaybillController {
       );
     }
   }
+
+  @Post('/:id/disable')
+  async disableWaybill(@Param('id') id: string) {
+    await this.waybillService.disable(id);
+  }
+
+  @Post('/:id/enable')
+  async enableWaybill(@Param('id') id: string) {
+    await this.waybillService.enable(id);
+  }
 }

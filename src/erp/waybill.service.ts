@@ -230,4 +230,26 @@ export class WaybillService {
       }
     }
   }
+
+  async disable(waybillId: string): Promise<void> {
+    const waybill = await this.waybillModel
+      .findByIdAndUpdate(waybillId, {
+        active: false,
+      })
+      .exec();
+    await Promise.all(
+      waybill.transactions.map((t) => this.transactionService.disable(t._id)),
+    );
+  }
+
+  async enable(waybillId: string): Promise<void> {
+    const waybill = await this.waybillModel
+      .findByIdAndUpdate(waybillId, {
+        active: true,
+      })
+      .exec();
+    await Promise.all(
+      waybill.transactions.map((t) => this.transactionService.enable(t._id)),
+    );
+  }
 }
