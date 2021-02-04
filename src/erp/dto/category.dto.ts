@@ -1,4 +1,10 @@
-import { MinLength, MaxLength, IsString } from 'class-validator';
+import {
+  MinLength,
+  MaxLength,
+  IsString,
+  IsNumber,
+  IsPositive,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 
 import { Category } from '../interfaces';
@@ -9,6 +15,11 @@ export class CreateCategoryDto implements Category {
   @MaxLength(15)
   @Transform(({ value }) => value.trim().replace(/^./, (c) => c.toUpperCase()))
   readonly title: string;
+
+  @IsNumber()
+  @IsPositive()
+  @Transform(({ value }) => Number(value))
+  readonly sortPriority: number;
 }
 export class UpdateCategoryDto implements Category {
   @IsString()
@@ -16,4 +27,9 @@ export class UpdateCategoryDto implements Category {
   @MaxLength(15)
   @Transform(({ value }) => value.trim().replace(/^./, (c) => c.toUpperCase()))
   readonly title: string;
+
+  @IsNumber()
+  @IsPositive()
+  @Transform(({ value }) => Number(value))
+  readonly sortPriority: number;
 }

@@ -114,8 +114,10 @@ export class TransactionService {
       {
         $unwind: '$category',
       },
+      {
+        $sort: { 'category.sortPriority': 1, 'product.code': 1 },
+      },
     ]);
-    // console.log(aggregated);
     return aggregated;
   }
 }

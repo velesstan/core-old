@@ -8,6 +8,10 @@ export const CategorySchema = new Schema(
       required: true,
       unique: true,
     },
+    sortPriority: {
+      type: Number,
+      default: 1000,
+    },
   },
   {
     timestamps: true,
