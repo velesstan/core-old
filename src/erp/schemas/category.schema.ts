@@ -8,10 +8,6 @@ export const CategorySchema = new Schema(
       required: true,
       unique: true,
     },
-    unit: {
-      type: String,
-      required: true,
-    },
   },
   {
     timestamps: true,
