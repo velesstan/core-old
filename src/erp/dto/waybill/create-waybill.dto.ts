@@ -8,16 +8,20 @@ import {
   IsPositive,
   IsEnum,
   ArrayMinSize,
+  IsBoolean,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { WaybillAction } from '../../interfaces';
 
-// class ProductSnapshotDto {
-//   @IsNumber()
-//   @IsPositive()
-//   readonly price: number;
-// }
+class ProductSnapshotDto {
+  @IsNumber()
+  @IsPositive()
+  readonly price: number;
+
+  @IsBoolean()
+  readonly reduce: boolean;
+}
 
 class ProductDto {
   @IsString()
@@ -26,9 +30,9 @@ class ProductDto {
   @IsNumber()
   @IsPositive()
   readonly quantity: number;
-  // @ValidateNested()
-  // @Type(() => ProductSnapshotDto)
-  // readonly snapshot: ProductSnapshotDto;
+  @ValidateNested()
+  @Type(() => ProductSnapshotDto)
+  readonly snapshot: ProductSnapshotDto;
 }
 
 export class CreateWaybillDto {

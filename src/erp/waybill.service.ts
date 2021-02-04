@@ -112,6 +112,9 @@ export class WaybillService {
             this.transactionService.create({
               product: p.product,
               quantity: -p.quantity,
+              ...(action === WaybillAction.SELL
+                ? { snapshot: p.snapshot }
+                : {}),
               stock: source,
             }),
           ),

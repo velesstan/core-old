@@ -30,4 +30,16 @@ export const TransactionSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  snapshot: {
+    type: {
+      price: {
+        type: Number,
+        required: true,
+      },
+      reduce: {
+        type: Boolean,
+        required: true,
+      },
+    },
+  },
 });
