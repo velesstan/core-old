@@ -8,7 +8,9 @@ import { CreateUserDto, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(UserRef) private userModel: Model<UserModel>) {}
+  constructor(@InjectModel(UserRef) private userModel: Model<UserModel>) {
+    this.bootstrap();
+  }
 
   async bootstrap(): Promise<void> {
     const draftUser = await this.userModel

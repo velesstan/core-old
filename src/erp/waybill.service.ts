@@ -165,6 +165,7 @@ export class WaybillService {
           action,
           transactions: incometransactions.map((t) => t._id),
         });
+        break;
       }
       case WaybillAction.PRODUCTION: {
         console.log('PRODUCTS: ', products);
@@ -225,6 +226,7 @@ export class WaybillService {
           action,
           transactions: incometransactions.map((t) => t._id),
         });
+        break;
       }
     }
   }
