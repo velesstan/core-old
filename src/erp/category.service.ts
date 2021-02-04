@@ -11,7 +11,15 @@ export class CategoryService {
   constructor(
     @InjectModel(CategoryRef)
     private readonly categoryModel: Model<CategoryModel>,
-  ) {}
+  ) {
+    this.fixUnit();
+  }
+
+  async fixUnit() {
+    const res = await this.categoryModel
+      .updateMany({}, { $unset: { unit: true } }, { multi: true })
+      .exec();
+  }
 
   async find(): Promise<CategoryModel[]> {
     return await this.categoryModel.find({}).exec();

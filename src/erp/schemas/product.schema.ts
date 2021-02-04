@@ -19,6 +19,10 @@ export const ProductSchema = new Schema(
       ref: CategoryRef,
       required: true,
     },
+    unit: {
+      type: String,
+      required: true,
+    },
     price_retail: {
       type: Number,
       required: true,

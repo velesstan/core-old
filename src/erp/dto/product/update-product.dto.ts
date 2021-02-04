@@ -15,6 +15,8 @@ export class UpdateProductDto implements Product {
   @Length(24)
   readonly category: string;
   @IsString()
+  readonly unit: string;
+  @IsString()
   @MinLength(3)
   @MaxLength(10)
   @Transform(({ value }) => value.trim().replace(/^./, (c) => c.toUpperCase()))
