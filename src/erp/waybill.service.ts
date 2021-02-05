@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { promises } from 'fs';
 import { Model } from 'mongoose';
 
 import { CreateWaybillDto, FindWaybillDto } from './dto';
@@ -253,6 +254,13 @@ export class WaybillService {
       .exec();
     await Promise.all(
       waybill.transactions.map((t) => this.transactionService.enable(t._id)),
+    );
+  }
+
+  async deleteWaybill(waybillId: string): Promise<void> {
+    const waybill = await this.waybillModel.findByIdAndRemove(waybillId).exec();
+    await Promise.all(
+      waybill.transactions.map((t) => this.transactionService.delete(t._id)),
     );
   }
 }

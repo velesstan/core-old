@@ -17,6 +17,10 @@ export class TransactionService {
     return await new this.transactionModel(transaction).save();
   }
 
+  async delete(transactionId: string): Promise<void> {
+    await this.transactionModel.findByIdAndDelete(transactionId).exec();
+  }
+
   async disable(transactionId: string): Promise<TransactionModel> {
     return await this.transactionModel.findByIdAndUpdate(transactionId, {
       active: false,

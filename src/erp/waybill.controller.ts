@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Header,
   HttpException,
@@ -62,5 +63,10 @@ export class WaybillController {
   @Post('/:id/enable')
   async enableWaybill(@Param('id') id: string) {
     await this.waybillService.enable(id);
+  }
+
+  @Delete('/:id')
+  async deleyeWaybill(@Param('id') id: string) {
+    await this.waybillService.deleteWaybill(id);
   }
 }
