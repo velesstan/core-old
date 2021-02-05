@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import puppeteer, { PDFOptions } from 'puppeteer';
 import handlebars from 'handlebars';
+import path from 'path';
+import fs from 'fs';
 import xlsx from 'xlsx';
 
-import templateHTML from './templates/invoice';
+const templateHTML = fs.readFileSync(path.join(__dirname, 'templates', 'invoice.html'), 'utf-8');
 
 import { ProductModel, WaybillModel } from '../erp/interfaces';
 
@@ -24,12 +26,13 @@ export class DocumentService {
       invoiceStock: (invoice.stock as any).title,
       items: invoice.toObject().transactions.map((t) => ({
         product: t.product,
+        price: t.snapshot ? t.snapshot.price : (t.product as any).price_retail,
         quantity: Math.abs(t.quantity),
-        total: (t.product as any).price_retail * Math.abs(t.quantity),
+        total: Math.abs(t.quantity) * (t.snapshot ? t.snapshot.price : (t.product as any).price_retail),
       })),
       subtotal: invoice.transactions.reduce(
         (acc, t) =>
-          (acc += (t.product as any).price_retail * Math.abs(t.quantity)),
+          (acc += Math.abs(t.quantity) * (t.snapshot ? t.snapshot.price : (t.product as any).price_retail)),
         0,
       ),
     });
