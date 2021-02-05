@@ -19,7 +19,7 @@ import { CreateProductDto, FindProductDto, UpdateProductDto } from './dto';
 
 import { ProductService } from './product.service';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiTags('products')
 @Controller('/products')
