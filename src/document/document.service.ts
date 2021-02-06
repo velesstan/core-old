@@ -15,6 +15,8 @@ import { ProductModel, WaybillModel } from '../erp/interfaces';
 @Injectable()
 export class DocumentService {
   async makeInvoice(invoice: WaybillModel) {
+    const zeroPad = (num: number, places: number) =>
+      String(num).padStart(places, '0');
     handlebars.registerHelper('incremented', (index) => {
       return index + 1;
     });
@@ -24,7 +26,7 @@ export class DocumentService {
     const template = handlebars.compile(templateHTML);
     const html = template({
       invoiceDate: invoice.createdAt.toLocaleDateString('ru-RU'),
-      invoiceNSerialNumber: invoice.serialNumber,
+      invoiceSerialNumber: zeroPad(invoice.serialNumber, 6),
       invoiceType: invoice.type === 'OUTCOME' ? 'Расходная' : 'Приходная',
       invoiceStock: (invoice.stock as any).title,
       items: invoice.toObject().transactions.map((t) => ({
@@ -46,7 +48,7 @@ export class DocumentService {
 
     const options = {
       width: '1000px',
-      format: 'A4',
+      format: 'A5',
       headerTemplate: '<p></p>',
       footerTemplate: '<p></p>',
       displayHeaderFooter: false,
