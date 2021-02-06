@@ -39,14 +39,13 @@ export const WaybillSchema = new Schema(
     },
     date: {
       type: Date,
-      default: () => Date.now()
-    }
+      default: () => Date.now(),
+    },
   },
   {
     timestamps: true,
   },
 );
-
 
 export const WaybillCounterRef = 'WaybillCounterRef';
 export const WaybillCounterSchema = new Schema(
@@ -55,8 +54,8 @@ export const WaybillCounterSchema = new Schema(
       type: Number,
       default: 0,
       required: true,
-      unique: true
-    }
+      unique: true,
+    },
   },
   {
     timestamps: true,

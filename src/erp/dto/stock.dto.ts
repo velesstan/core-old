@@ -9,10 +9,6 @@ export class CreateStockDto implements Stock {
   @MaxLength(15)
   @Transform(({ value }) => value.trim().replace(/^./, (c) => c.toUpperCase()))
   readonly title: string;
-  @IsString()
-  @MinLength(1)
-  @MaxLength(10)
-  readonly waybillPrefix: string;
 }
 export class UpdateStockDto implements Stock {
   @IsString()
@@ -20,8 +16,4 @@ export class UpdateStockDto implements Stock {
   @MaxLength(15)
   @Transform(({ value }) => value.trim().replace(/^./, (c) => c.toUpperCase()))
   readonly title: string;
-  @IsString()
-  @MinLength(1)
-  @MaxLength(10)
-  readonly waybillPrefix: string;
 }

@@ -19,7 +19,8 @@ import { TransactionService } from './transaction.service';
 export class WaybillService {
   constructor(
     @InjectModel(WaybillRef) private readonly waybillModel: Model<WaybillModel>,
-    @InjectModel(WaybillCounterRef) private readonly waybillCounterModel: Model<WaybillCounterModel>,
+    @InjectModel(WaybillCounterRef)
+    private readonly waybillCounterModel: Model<WaybillCounterModel>,
     private readonly transactionService: TransactionService,
     private readonly productService: ProductService,
   ) {
@@ -43,10 +44,9 @@ export class WaybillService {
       return;
     }
     if (waybillCounter.length === 0) {
-      await new this.waybillCounterModel({ serialNumber: 0 }).save()
-    }
-    else {
-      throw "Error waybill serial number!";
+      await new this.waybillCounterModel({ serialNumber: 0 }).save();
+    } else {
+      throw 'Error waybill serial number!';
     }
   }
 
@@ -92,11 +92,17 @@ export class WaybillService {
   }
 
   async nextWaybillSerialNumber(): Promise<number> {
-    const { serialNumber } = await this.waybillCounterModel.findOneAndUpdate({}, {
-      $inc: {
-        serialNumber: 1
-      },
-    }, { new: true }).exec()
+    const { serialNumber } = await this.waybillCounterModel
+      .findOneAndUpdate(
+        {},
+        {
+          $inc: {
+            serialNumber: 1,
+          },
+        },
+        { new: true },
+      )
+      .exec();
     return serialNumber;
   }
 

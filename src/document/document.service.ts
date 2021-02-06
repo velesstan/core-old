@@ -5,7 +5,10 @@ import path from 'path';
 import fs from 'fs';
 import xlsx from 'xlsx';
 
-const templateHTML = fs.readFileSync(path.join(__dirname, 'templates', 'invoice.html'), 'utf-8');
+const templateHTML = fs.readFileSync(
+  path.join(__dirname, 'templates', 'invoice.html'),
+  'utf-8',
+);
 
 import { ProductModel, WaybillModel } from '../erp/interfaces';
 
@@ -28,11 +31,15 @@ export class DocumentService {
         product: t.product,
         price: t.snapshot ? t.snapshot.price : (t.product as any).price_retail,
         quantity: Math.abs(t.quantity),
-        total: Math.abs(t.quantity) * (t.snapshot ? t.snapshot.price : (t.product as any).price_retail),
+        total:
+          Math.abs(t.quantity) *
+          (t.snapshot ? t.snapshot.price : (t.product as any).price_retail),
       })),
       subtotal: invoice.transactions.reduce(
         (acc, t) =>
-          (acc += Math.abs(t.quantity) * (t.snapshot ? t.snapshot.price : (t.product as any).price_retail)),
+          (acc +=
+            Math.abs(t.quantity) *
+            (t.snapshot ? t.snapshot.price : (t.product as any).price_retail)),
         0,
       ),
     });

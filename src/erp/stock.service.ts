@@ -10,8 +10,11 @@ import { CreateStockDto, UpdateStockDto } from './dto';
 export class StockService {
   constructor(
     @InjectModel(StockRef) private readonly stockModel: Model<StockModel>,
-  ) {}
+  ) {
+    this.initialize();
+  }
 
+  async initialize(): Promise<void> {}
   async getById(id: string): Promise<StockModel> {
     return await this.stockModel.findById(id).exec();
   }
@@ -28,29 +31,5 @@ export class StockService {
   }
   async removeById(id: string) {
     return await this.stockModel.findByIdAndRemove(id).exec();
-  }
-  async nextWaybillIncomeNumber(id: string): Promise<string> {
-    const { waybillPrefix, incomeWaybillCount } = await this.stockModel
-      .findByIdAndUpdate(
-        id,
-        {
-          $inc: { incomeWaybillCount: 1 },
-        },
-        { new: true },
-      )
-      .exec();
-    return `${waybillPrefix}-${incomeWaybillCount}`;
-  }
-  async nextWaybillOutcomeNumber(id: string): Promise<string> {
-    const { waybillPrefix, outcomeWaybillCount } = await this.stockModel
-      .findByIdAndUpdate(
-        id,
-        {
-          $inc: { outcomeWaybillCount: 1 },
-        },
-        { new: true },
-      )
-      .exec();
-    return `${waybillPrefix}-${outcomeWaybillCount}`;
   }
 }

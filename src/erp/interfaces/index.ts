@@ -8,5 +8,5 @@ export {
   WaybillAction,
   WaybillType,
   WaybillCounter,
-  WaybillCounterModel
+  WaybillCounterModel,
 } from './waybill.interface';

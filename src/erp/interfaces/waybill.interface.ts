@@ -33,4 +33,4 @@ export interface WaybillModel extends Waybill, Document {
 export interface WaybillCounter {
   readonly serialNumber: number;
 }
-export interface WaybillCounterModel extends WaybillCounter, Document { }
+export interface WaybillCounterModel extends WaybillCounter, Document {}
