@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { promises } from 'fs';
 import { Model } from 'mongoose';
 
 import { CreateWaybillDto, FindWaybillDto } from './dto';
 import {
   Waybill,
   WaybillAction,
+  WaybillCounterModel,
   WaybillModel,
   WaybillType,
 } from './interfaces';
 import { ProductService } from './product.service';
-import { WaybillRef } from './schemas';
-import { StockService } from './stock.service';
+import { WaybillCounterRef, WaybillRef } from './schemas';
 
 import { TransactionService } from './transaction.service';
 
@@ -20,20 +19,35 @@ import { TransactionService } from './transaction.service';
 export class WaybillService {
   constructor(
     @InjectModel(WaybillRef) private readonly waybillModel: Model<WaybillModel>,
+    @InjectModel(WaybillCounterRef) private readonly waybillCounterModel: Model<WaybillCounterModel>,
     private readonly transactionService: TransactionService,
-    private readonly stockService: StockService,
     private readonly productService: ProductService,
-  ) {}
+  ) {
+    this.initialize();
+  }
 
   async create(waybill: Waybill): Promise<WaybillModel> {
-    const { action, stock, type, transactions, title } = waybill;
+    const { action, stock, type, transactions, serialNumber } = waybill;
     return await new this.waybillModel({
       action,
       type,
       stock,
       transactions,
-      title,
+      serialNumber,
     }).save();
+  }
+
+  private async initialize(): Promise<void> {
+    const waybillCounter = await this.waybillCounterModel.find({}).exec();
+    if (waybillCounter.length === 1) {
+      return;
+    }
+    if (waybillCounter.length === 0) {
+      await new this.waybillCounterModel({ serialNumber: 0 }).save()
+    }
+    else {
+      throw "Error waybill serial number!";
+    }
   }
 
   async findById(id: string): Promise<WaybillModel> {
@@ -77,14 +91,21 @@ export class WaybillService {
       .exec();
   }
 
+  async nextWaybillSerialNumber(): Promise<number> {
+    const { serialNumber } = await this.waybillCounterModel.findOneAndUpdate({}, {
+      $inc: {
+        serialNumber: 1
+      },
+    }, { new: true }).exec()
+    return serialNumber;
+  }
+
   async process(waybill: CreateWaybillDto): Promise<any> {
     const { action, products, destination, source } = waybill;
     switch (action) {
       case WaybillAction.BUY:
       case WaybillAction.IMPORT: {
-        const nextIncomeWaybillTitle = await this.stockService.nextWaybillIncomeNumber(
-          destination,
-        );
+        const serialNumber = await this.nextWaybillSerialNumber();
         const transactions = await Promise.all(
           products.map((p) =>
             this.transactionService.create({
@@ -95,7 +116,7 @@ export class WaybillService {
           ),
         );
         const waybill = await this.create({
-          title: nextIncomeWaybillTitle,
+          serialNumber: serialNumber,
           type: WaybillType.INCOME,
           stock: destination,
           action,
@@ -105,9 +126,7 @@ export class WaybillService {
       }
       case WaybillAction.SELL:
       case WaybillAction.UTILIZATION: {
-        const nextOutcomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
-          source,
-        );
+        const serialNumber = await this.nextWaybillSerialNumber();
         const transactions = await Promise.all(
           products.map((p) =>
             this.transactionService.create({
@@ -121,7 +140,7 @@ export class WaybillService {
           ),
         );
         const waybill = await this.create({
-          title: nextOutcomeWaybillTitle,
+          serialNumber: serialNumber,
           type: WaybillType.OUTCOME,
           stock: source,
           action,
@@ -130,12 +149,7 @@ export class WaybillService {
         return waybill;
       }
       case WaybillAction.MOVE: {
-        const nextOutcomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
-          source,
-        );
-        const nexIncomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
-          destination,
-        );
+        const serialNumber = await this.nextWaybillSerialNumber();
         const outCometransactions = await Promise.all(
           products.map((p) =>
             this.transactionService.create({
@@ -146,7 +160,7 @@ export class WaybillService {
           ),
         );
         const outcomeWaybill = await this.create({
-          title: nextOutcomeWaybillTitle,
+          serialNumber: serialNumber,
           type: WaybillType.OUTCOME,
           stock: source,
           action,
@@ -163,7 +177,7 @@ export class WaybillService {
           ),
         );
         const incomeWaybill = await this.create({
-          title: nexIncomeWaybillTitle,
+          serialNumber: serialNumber,
           type: WaybillType.INCOME,
           stock: destination,
           action,
@@ -186,12 +200,7 @@ export class WaybillService {
           }),
         );
 
-        const nextOutcomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
-          source,
-        );
-        const nexIncomeWaybillTitle = await this.stockService.nextWaybillOutcomeNumber(
-          destination,
-        );
+        const serialNumber = await this.nextWaybillSerialNumber();
         const outCometransactions = [];
 
         for (let i = 0; i < populatedProducts.length; i++) {
@@ -207,7 +216,7 @@ export class WaybillService {
           }
         }
         const outcomeWaybill = await this.create({
-          title: nextOutcomeWaybillTitle,
+          serialNumber: serialNumber,
           type: WaybillType.OUTCOME,
           stock: source,
           action,
@@ -224,7 +233,7 @@ export class WaybillService {
           ),
         );
         const incomeWaybill = await this.create({
-          title: nexIncomeWaybillTitle,
+          serialNumber: serialNumber,
           type: WaybillType.INCOME,
           stock: destination,
           action,

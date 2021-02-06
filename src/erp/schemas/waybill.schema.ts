@@ -19,8 +19,8 @@ export const WaybillSchema = new Schema(
       ref: StockRef,
       required: true,
     },
-    title: {
-      type: String,
+    serialNumber: {
+      type: Number,
       required: true,
     },
     active: {
@@ -37,6 +37,26 @@ export const WaybillSchema = new Schema(
       required: true,
       validate: (v: []) => Array.isArray(v) && !!v.length,
     },
+    date: {
+      type: Date,
+      default: () => Date.now()
+    }
+  },
+  {
+    timestamps: true,
+  },
+);
+
+
+export const WaybillCounterRef = 'WaybillCounterRef';
+export const WaybillCounterSchema = new Schema(
+  {
+    serialNumber: {
+      type: Number,
+      default: 0,
+      required: true,
+      unique: true
+    }
   },
   {
     timestamps: true,

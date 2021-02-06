@@ -14,6 +14,8 @@ import {
   TransactionSchema,
   WaybillRef,
   WaybillSchema,
+  WaybillCounterRef,
+  WaybillCounterSchema,
 } from './schemas';
 
 import { ProductService } from './product.service';
@@ -37,6 +39,7 @@ import { ExportController } from './export.controller';
       { name: ProductRef, schema: ProductSchema },
       { name: TransactionRef, schema: TransactionSchema },
       { name: WaybillRef, schema: WaybillSchema },
+      { name: WaybillCounterRef, schema: WaybillCounterSchema }
     ]),
     DocumentModule,
   ],
@@ -58,4 +61,4 @@ import { ExportController } from './export.controller';
     ExportService,
   ],
 })
-export class ERPModule {}
+export class ERPModule { }

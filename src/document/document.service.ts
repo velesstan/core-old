@@ -21,7 +21,7 @@ export class DocumentService {
     const template = handlebars.compile(templateHTML);
     const html = template({
       invoiceDate: invoice.createdAt.toLocaleDateString('ru-RU'),
-      invoiceNumber: invoice.title,
+      invoiceNSerialNumber: invoice.serialNumber,
       invoiceType: invoice.type === 'OUTCOME' ? 'Расходная' : 'Приходная',
       invoiceStock: (invoice.stock as any).title,
       items: invoice.toObject().transactions.map((t) => ({
