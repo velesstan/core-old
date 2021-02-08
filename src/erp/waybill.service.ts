@@ -74,6 +74,7 @@ export class WaybillService {
     return await this.waybillModel
       .find(query)
       .sort('-createdAt')
+      .limit(10)
       .populate([
         {
           path: 'transactions',
@@ -221,13 +222,15 @@ export class WaybillService {
             outCometransactions.push(transaction);
           }
         }
-        const outcomeWaybill = await this.create({
-          serialNumber: serialNumber,
-          type: WaybillType.OUTCOME,
-          stock: source,
-          action,
-          transactions: outCometransactions.map((t) => t._id),
-        });
+        if (outCometransactions.length) {
+          const outcomeWaybill = await this.create({
+            serialNumber: serialNumber,
+            type: WaybillType.OUTCOME,
+            stock: source,
+            action,
+            transactions: outCometransactions.map((t) => t._id),
+          });
+        }
 
         const incometransactions = await Promise.all(
           products.map((p) =>
