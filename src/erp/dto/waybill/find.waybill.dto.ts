@@ -1,4 +1,5 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsDate } from 'class-validator';
+import dayjs from 'dayjs';
 import { Transform } from 'class-transformer';
 
 export class FindWaybillDto {
@@ -10,4 +11,18 @@ export class FindWaybillDto {
   @IsOptional()
   @Transform(({ value }) => Number(value))
   readonly serialNumber: number;
+
+  @IsString()
+  @IsOptional()
+  readonly stock: string;
+
+  @IsDate()
+  @IsOptional()
+  @Transform(({ value }) => dayjs.utc(value).startOf('day').toDate())
+  readonly start?: Date;
+
+  @IsDate()
+  @IsOptional()
+  @Transform(({ value }) => dayjs.utc(value).endOf('day').toDate())
+  readonly end?: Date;
 }

@@ -71,8 +71,20 @@ export class WaybillService {
   }
 
   async find(query: FindWaybillDto): Promise<WaybillModel[]> {
+    const { start, end, stock, ...rest } = query;
     return await this.waybillModel
-      .find(query)
+      .find({
+        ...rest,
+        ...(stock ? { stock } : {}),
+        ...(end
+          ? {
+              createdAt: {
+                $gte: start,
+                $lte: end,
+              },
+            }
+          : {}),
+      })
       .sort('-createdAt')
       .limit(10)
       .populate([
