@@ -13,8 +13,12 @@ export class ProductService {
   ) {}
 
   async find(query: FindProductDto): Promise<ProductModel[]> {
+    const { category, code } = query;
     return await this.productModel
-      .find(query)
+      .find({
+        ...(category ? { category } : {}),
+        ...(code ? { code: new RegExp(code, 'i') } : {}),
+      })
       .sort({ code: 'ascending' })
       .populate([
         { path: 'category' },

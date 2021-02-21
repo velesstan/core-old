@@ -10,8 +10,11 @@ import {
   Post,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { JwtAuthGuard } from 'src/auth/guards';
+import { User } from 'src/auth/utils';
 import { Readable } from 'stream';
 
 import { DocumentService } from '../document';
@@ -31,10 +34,13 @@ export class WaybillController {
     return await this.waybillService.find(query);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/')
-  async postWaybill(@Body() waybill: CreateWaybillDto) {
-    const newWaybill = await this.waybillService.process(waybill);
-    console.log('========NEW WAYBILL========');
+  async postWaybill(
+    @User('_id') userId: string,
+    @Body() waybill: CreateWaybillDto,
+  ) {
+    const newWaybill = await this.waybillService.process(waybill, userId);
     return newWaybill;
   }
 

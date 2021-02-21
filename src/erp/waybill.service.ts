@@ -28,13 +28,14 @@ export class WaybillService {
   }
 
   async create(waybill: Waybill): Promise<WaybillModel> {
-    const { action, stock, type, transactions, serialNumber } = waybill;
+    const { action, stock, type, transactions, serialNumber, user } = waybill;
     return await new this.waybillModel({
       action,
       type,
       stock,
       transactions,
       serialNumber,
+      user,
     }).save();
   }
 
@@ -100,6 +101,9 @@ export class WaybillService {
         {
           path: 'stock',
         },
+        {
+          path: 'user',
+        },
       ])
       .exec();
   }
@@ -119,7 +123,7 @@ export class WaybillService {
     return serialNumber;
   }
 
-  async process(waybill: CreateWaybillDto): Promise<any> {
+  async process(waybill: CreateWaybillDto, user: string): Promise<any> {
     const { action, products, destination, source } = waybill;
     switch (action) {
       case WaybillAction.BUY:
@@ -140,6 +144,7 @@ export class WaybillService {
           stock: destination,
           action,
           transactions: transactions.map((t) => t._id),
+          user,
         });
         return waybill;
       }
@@ -164,6 +169,7 @@ export class WaybillService {
           stock: source,
           action,
           transactions: transactions.map((t) => t._id),
+          user,
         });
         return waybill;
       }
@@ -184,6 +190,7 @@ export class WaybillService {
           stock: source,
           action,
           transactions: outCometransactions.map((t) => t._id),
+          user,
         });
 
         const incometransactions = await Promise.all(
@@ -201,6 +208,7 @@ export class WaybillService {
           stock: destination,
           action,
           transactions: incometransactions.map((t) => t._id),
+          user,
         });
         break;
       }
@@ -241,6 +249,7 @@ export class WaybillService {
             stock: source,
             action,
             transactions: outCometransactions.map((t) => t._id),
+            user,
           });
         }
 
@@ -259,6 +268,7 @@ export class WaybillService {
           stock: destination,
           action,
           transactions: incometransactions.map((t) => t._id),
+          user,
         });
         break;
       }

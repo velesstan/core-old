@@ -16,6 +16,7 @@ export enum WaybillType {
   OUTCOME = 'OUTCOME',
 }
 export interface Waybill {
+  readonly user: string;
   readonly stock: string; // stock id
   readonly serialNumber: number;
   readonly action: WaybillAction; // action (import/sell/buy)

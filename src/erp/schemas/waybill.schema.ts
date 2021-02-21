@@ -1,11 +1,17 @@
 import { Schema } from 'mongoose';
 
+import { UserRef } from '../../user/schemas';
 import { StockRef } from './stock.schema';
 import { TransactionRef } from './transaction.schema';
 
 export const WaybillRef = 'WaybillRef';
 export const WaybillSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: UserRef,
+      required: true,
+    },
     action: {
       type: String,
       required: true,
