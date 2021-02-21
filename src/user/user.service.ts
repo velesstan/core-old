@@ -12,7 +12,6 @@ export class UserService {
     if (process.env.NODE_ENV === 'production') {
       this.bootstrap();
     }
-
   }
   async bootstrap(): Promise<void> {
     const draftUser = await this.userModel
@@ -24,6 +23,9 @@ export class UserService {
       await this.create({
         email: 'admin@veles.services',
         password: 'admin',
+        firstName: 'Евгений',
+        lastName: '',
+        patronymic: '',
       });
     }
   }

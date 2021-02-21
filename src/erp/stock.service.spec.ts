@@ -44,7 +44,7 @@ describe('Stock service', () => {
 
   it('should create stock', async () => {
     const stock$ = await stockService.create({
-      title: 'Stock'
+      title: 'Stock',
     });
     expect(stock$).toMatchObject({ title: 'Stock' });
   });
@@ -55,7 +55,7 @@ describe('Stock service', () => {
 
   it('should update stock', async () => {
     let stock$ = await stockService.create({
-      title: 'Stock'
+      title: 'Stock',
     });
     stock$ = await stockService.updateById(stock$._id, {
       title: 'Stock-1',

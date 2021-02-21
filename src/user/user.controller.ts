@@ -1,9 +1,17 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/guards';
 
-import { CreateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto } from './dto';
 import { UserModel } from './interfaces';
 import { UserService } from './user.service';
 
@@ -21,5 +29,13 @@ export class UserController {
   @Post('/')
   async create(@Body() user: CreateUserDto): Promise<UserModel> {
     return await this.userService.create(user);
+  }
+
+  @Put('/:id')
+  async update(
+    @Param('id') id: string,
+    @Body() user: UpdateUserDto,
+  ): Promise<UserModel> {
+    return await this.userService.updateById(id, user);
   }
 }

@@ -67,7 +67,7 @@ describe('Waybill service', () => {
           { name: ProductRef, schema: ProductSchema },
           { name: StockRef, schema: StockSchema },
           { name: WaybillRef, schema: WaybillSchema },
-          { name: WaybillCounterRef, schema: WaybillCounterSchema }
+          { name: WaybillCounterRef, schema: WaybillCounterSchema },
         ]),
       ],
       providers: [
@@ -213,14 +213,20 @@ describe('Waybill service', () => {
       destination: stock._id,
       products: [
         {
-          product: product_1._id, quantity: 1, snapshot: {
-            price: 100, reduce: false
-          }
+          product: product_1._id,
+          quantity: 1,
+          snapshot: {
+            price: 100,
+            reduce: false,
+          },
         },
         {
-          product: product_2._id, quantity: 2, snapshot: {
-            price: 190, reduce: true
-          }
+          product: product_2._id,
+          quantity: 2,
+          snapshot: {
+            price: 190,
+            reduce: true,
+          },
         },
       ],
     });
@@ -255,16 +261,22 @@ describe('Waybill service', () => {
       source: stock._id,
       products: [
         {
-          product: product_1._id, quantity: 1, snapshot: {
-            price: 100, reduce: false
-          }
+          product: product_1._id,
+          quantity: 1,
+          snapshot: {
+            price: 100,
+            reduce: false,
+          },
         },
         {
-          product: product_2._id, quantity: 2, snapshot: {
-            price: 190, reduce: true
-          }
+          product: product_2._id,
+          quantity: 2,
+          snapshot: {
+            price: 190,
+            reduce: true,
+          },
         },
-      ]
+      ],
     });
     expect(waybill).toMatchObject({
       action: 'SELL',

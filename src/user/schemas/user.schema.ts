@@ -12,6 +12,9 @@ export const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    firstName: String,
+    lastName: String,
+    patronymic: String,
   },
   {
     timestamps: true,
