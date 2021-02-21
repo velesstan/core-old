@@ -12,6 +12,8 @@ import {
   StockSchema,
   TransactionRef,
   TransactionSchema,
+  WaybillCounterRef,
+  WaybillCounterSchema,
   WaybillRef,
   WaybillSchema,
 } from './schemas';
@@ -23,7 +25,7 @@ import { WaybillService } from './waybill.service';
 import {
   CategoryModel,
   StockModel,
-  WayBillAction,
+  WaybillAction,
   WaybillType,
 } from './interfaces';
 
@@ -65,6 +67,7 @@ describe('Waybill service', () => {
           { name: ProductRef, schema: ProductSchema },
           { name: StockRef, schema: StockSchema },
           { name: WaybillRef, schema: WaybillSchema },
+          { name: WaybillCounterRef, schema: WaybillCounterSchema }
         ]),
       ],
       providers: [
@@ -83,11 +86,9 @@ describe('Waybill service', () => {
 
     category = await categoryService.create({
       title: 'TestCategory',
-      unit: 'unit',
     });
     stock = await stockService.create({
       title: 'Stock',
-      waybillPrefix: 'S',
     });
   });
 
@@ -98,6 +99,7 @@ describe('Waybill service', () => {
   it('should create waybill', async () => {
     const product_1 = await productService.create({
       category: category._id,
+      unit: 'cm',
       title: 'T-1',
       code: 't-1',
       price_retail: 100,
@@ -105,6 +107,7 @@ describe('Waybill service', () => {
     });
     const product_2 = await productService.create({
       category: category._id,
+      unit: 'cm',
       title: 'T-2',
       code: 't-2',
       price_retail: 200,
@@ -120,14 +123,14 @@ describe('Waybill service', () => {
       ),
     );
     const waybill = await waybillService.create({
-      action: WayBillAction.IMPORT,
+      action: WaybillAction.IMPORT,
       type: WaybillType.INCOME,
       stock: stock._id,
-      title: 'WB-1',
+      serialNumber: 1,
       transactions: transactions.map((t) => t._id),
     });
     expect(waybill.toObject()).toMatchObject({
-      title: 'WB-1',
+      serialNumber: 1,
       type: 'INCOME',
       action: 'IMPORT',
       stock: stock._id,
@@ -138,6 +141,7 @@ describe('Waybill service', () => {
   it('should find and populate waybills', async () => {
     const product_1 = await productService.create({
       category: category._id,
+      unit: 'cm',
       title: 'T-1',
       code: 't-1',
       price_retail: 100,
@@ -145,6 +149,7 @@ describe('Waybill service', () => {
     });
     const product_2 = await productService.create({
       category: category._id,
+      unit: 'cm',
       title: 'T-2',
       code: 't-2',
       price_retail: 200,
@@ -161,10 +166,10 @@ describe('Waybill service', () => {
       ),
     );
     await waybillService.create({
-      action: WayBillAction.IMPORT,
+      action: WaybillAction.IMPORT,
       type: WaybillType.INCOME,
       stock: stock._id,
-      title: 'WB-1',
+      serialNumber: 1,
       transactions: transactions.map((t) => t._id),
     });
     const waybills = await waybillService.find({});
@@ -190,29 +195,39 @@ describe('Waybill service', () => {
     const product_1 = await productService.create({
       category: category._id,
       title: 'T-1',
+      unit: 'cmd',
       code: 't-1',
       price_retail: 100,
       price_wholesale: 90,
     });
     const product_2 = await productService.create({
       category: category._id,
+      unit: 'cm',
       title: 'T-2',
       code: 't-2',
       price_retail: 200,
       price_wholesale: 190,
     });
     const waybill = await waybillService.process({
-      action: WayBillAction.BUY,
+      action: WaybillAction.BUY,
       destination: stock._id,
       products: [
-        { product: product_1._id, quantity: 1 },
-        { product: product_2._id, quantity: 2 },
+        {
+          product: product_1._id, quantity: 1, snapshot: {
+            price: 100, reduce: false
+          }
+        },
+        {
+          product: product_2._id, quantity: 2, snapshot: {
+            price: 190, reduce: true
+          }
+        },
       ],
     });
     expect(waybill).toMatchObject({
       action: 'BUY',
       type: 'INCOME',
-      title: 'S-1',
+      serialNumber: 1,
       stock: stock._id,
     });
     expect(waybill.transactions).toHaveLength(2);
@@ -222,29 +237,39 @@ describe('Waybill service', () => {
     const product_1 = await productService.create({
       category: category._id,
       title: 'T-1',
+      unit: 'cm',
       code: 't-1',
       price_retail: 100,
       price_wholesale: 90,
     });
     const product_2 = await productService.create({
       category: category._id,
+      unit: 'cm',
       title: 'T-2',
       code: 't-2',
       price_retail: 200,
       price_wholesale: 190,
     });
     const waybill = await waybillService.process({
-      action: WayBillAction.SELL,
+      action: WaybillAction.SELL,
       source: stock._id,
       products: [
-        { product: product_1._id, quantity: 1 },
-        { product: product_2._id, quantity: 2 },
-      ],
+        {
+          product: product_1._id, quantity: 1, snapshot: {
+            price: 100, reduce: false
+          }
+        },
+        {
+          product: product_2._id, quantity: 2, snapshot: {
+            price: 190, reduce: true
+          }
+        },
+      ]
     });
     expect(waybill).toMatchObject({
       action: 'SELL',
       type: 'OUTCOME',
-      title: 'S-1',
+      serialNumber: 1,
       stock: stock._id,
     });
     expect(waybill.transactions).toHaveLength(2);

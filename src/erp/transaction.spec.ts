@@ -73,18 +73,17 @@ describe('Transaction service', () => {
 
     category = await categoryService.create({
       title: 'TestCategory',
-      unit: 'unit',
     });
     product = await productService.create({
       category: category._id,
       title: 'TestProduct',
+      unit: 'cm',
       code: 'test-1',
       price_retail: 100,
       price_wholesale: 90,
     });
     stock = await stockService.create({
       title: 'Stock',
-      waybillPrefix: 'S',
     });
   });
 
@@ -107,25 +106,13 @@ describe('Transaction service', () => {
   });
 
   it('should count stock transactions for given date range', async () => {
-    const product_2 = await productService.create({
-      category: category._id,
-      title: 'TestProduct',
-      code: 'test-2',
-      price_retail: 120,
-      price_wholesale: 100,
-    });
     await transactionService.create({
       product: product._id,
       quantity: 3,
       stock: stock._id,
     });
     await transactionService.create({
-      product: product_2._id,
-      quantity: 3,
-      stock: stock._id,
-    });
-    await transactionService.create({
-      product: product_2._id,
+      product: product._id,
       quantity: -1,
       stock: stock._id,
     });
@@ -134,21 +121,12 @@ describe('Transaction service', () => {
       start: dayjs().startOf('day').toDate(),
       end: dayjs().endOf('day').toDate(),
     });
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(1);
     expect(result[0]).toMatchObject({
       startBalance: 0,
       endBalance: 2,
       totalIncome: 3,
       totalOutcome: -1,
-      product: {
-        code: 'test-2',
-      },
-    });
-    expect(result[1]).toMatchObject({
-      startBalance: 0,
-      endBalance: 3,
-      totalIncome: 3,
-      totalOutcome: 0,
       product: {
         code: 'test-1',
       },

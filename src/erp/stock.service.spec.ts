@@ -44,10 +44,9 @@ describe('Stock service', () => {
 
   it('should create stock', async () => {
     const stock$ = await stockService.create({
-      title: 'Stock',
-      waybillPrefix: 'S',
+      title: 'Stock'
     });
-    expect(stock$).toMatchObject({ title: 'Stock', waybillPrefix: 'S' });
+    expect(stock$).toMatchObject({ title: 'Stock' });
   });
 
   it('should get all stocks', async () => {
@@ -56,20 +55,17 @@ describe('Stock service', () => {
 
   it('should update stock', async () => {
     let stock$ = await stockService.create({
-      title: 'Stock',
-      waybillPrefix: 'S',
+      title: 'Stock'
     });
     stock$ = await stockService.updateById(stock$._id, {
       title: 'Stock-1',
-      waybillPrefix: 'S-2',
     });
-    expect(stock$).toMatchObject({ title: 'Stock-1', waybillPrefix: 'S-2' });
+    expect(stock$).toMatchObject({ title: 'Stock-1' });
   });
 
   it('should remove stock', async () => {
     const stock$ = await stockService.create({
       title: 'Stock',
-      waybillPrefix: 'S',
     });
     await stockService.removeById(stock$._id);
     expect(await stockService.getById(stock$._id)).toBe(null);
@@ -78,48 +74,11 @@ describe('Stock service', () => {
   it('should throw error for dublicate name', async () => {
     await stockService.create({
       title: 'Stock',
-      waybillPrefix: 'S1',
     });
     await expect(
       stockService.create({
         title: 'Stock',
-        waybillPrefix: 'S2',
       }),
     ).rejects.toThrow();
-  });
-
-  it('should throw error for dublicate waybill prefix', async () => {
-    await stockService.create({
-      title: 'Stock-1',
-      waybillPrefix: 'S',
-    });
-    await expect(
-      stockService.create({
-        title: 'Stock-2',
-        waybillPrefix: 'S',
-      }),
-    ).rejects.toThrow();
-  });
-
-  it('should increase next waybill income number', async () => {
-    let stock$ = await stockService.create({
-      title: 'Stock',
-      waybillPrefix: 'S',
-    });
-    expect(stock$.incomeWaybillCount).toBe(0);
-    await stockService.nextWaybillIncomeNumber(stock$._id);
-    stock$ = await stockService.getById(stock$._id);
-    expect(stock$.incomeWaybillCount).toBe(1);
-  });
-
-  it('should increase next waybill outcome number', async () => {
-    let stock$ = await stockService.create({
-      title: 'Stock',
-      waybillPrefix: 'S',
-    });
-    expect(stock$.outcomeWaybillCount).toBe(0);
-    await stockService.nextWaybillOutcomeNumber(stock$._id);
-    stock$ = await stockService.getById(stock$._id);
-    expect(stock$.outcomeWaybillCount).toBe(1);
   });
 });

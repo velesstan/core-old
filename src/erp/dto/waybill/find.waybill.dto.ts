@@ -10,11 +10,11 @@ export class FindWaybillDto {
   @IsNumber()
   @IsOptional()
   @Transform(({ value }) => Number(value))
-  readonly serialNumber: number;
+  readonly serialNumber?: number;
 
   @IsString()
   @IsOptional()
-  readonly stock: string;
+  readonly stock?: string;
 
   @IsDate()
   @IsOptional()

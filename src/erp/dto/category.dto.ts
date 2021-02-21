@@ -4,6 +4,7 @@ import {
   IsString,
   IsNumber,
   IsPositive,
+  IsOptional,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
@@ -18,8 +19,9 @@ export class CreateCategoryDto implements Category {
 
   @IsNumber()
   @IsPositive()
+  @IsOptional()
   @Transform(({ value }) => Number(value))
-  readonly sortPriority: number;
+  readonly sortPriority?: number;
 }
 export class UpdateCategoryDto implements Category {
   @IsString()
@@ -30,6 +32,7 @@ export class UpdateCategoryDto implements Category {
 
   @IsNumber()
   @IsPositive()
+  @IsOptional()
   @Transform(({ value }) => Number(value))
-  readonly sortPriority: number;
+  readonly sortPriority?: number;
 }

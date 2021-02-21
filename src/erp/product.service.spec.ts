@@ -51,7 +51,6 @@ describe('Product service', () => {
     categoryService = module.get(CategoryService);
     category = await categoryService.create({
       title: 'Category',
-      unit: 'unit',
     });
   });
 
@@ -62,6 +61,7 @@ describe('Product service', () => {
   it('should create product', async () => {
     const product$ = await productService.create({
       title: 'Product',
+      unit: 'cm',
       category: category._id,
       code: 'product-1',
       price_retail: 300,
@@ -70,6 +70,7 @@ describe('Product service', () => {
     expect(product$).toMatchObject({
       title: 'Product',
       code: 'product-1',
+      unit: 'cm',
       price_retail: 300,
       price_wholesale: 290,
     });
@@ -78,6 +79,7 @@ describe('Product service', () => {
   it('should update product', async () => {
     let product$ = await productService.create({
       title: 'Product',
+      unit: 'cm',
       category: category._id,
       code: 'product-1',
       price_retail: 300,
@@ -85,6 +87,7 @@ describe('Product service', () => {
     });
     product$ = await productService.updateById(product$._id, {
       title: 'Product',
+      unit: 'm',
       category: category._id,
       code: 'product-2',
       price_retail: 330,
@@ -92,6 +95,7 @@ describe('Product service', () => {
     });
     expect(product$).toMatchObject({
       title: 'Product',
+      unit: 'm',
       code: 'product-2',
       price_retail: 330,
       price_wholesale: 300,
@@ -101,6 +105,7 @@ describe('Product service', () => {
   it('should remove product', async () => {
     const product$ = await productService.create({
       title: 'Product',
+      unit: 'cm',
       category: category._id,
       code: 'product-1',
       price_retail: 300,
@@ -113,6 +118,7 @@ describe('Product service', () => {
   it('should throw error for dublicate code', async () => {
     await productService.create({
       title: 'Product',
+      unit: 'cm',
       category: category._id,
       code: 'product-1',
       price_retail: 300,
@@ -121,6 +127,7 @@ describe('Product service', () => {
     await expect(
       productService.create({
         title: 'Product',
+        unit: 'cm',
         category: category._id,
         code: 'product-1',
         price_retail: 300,
