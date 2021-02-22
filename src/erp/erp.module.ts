@@ -18,6 +18,7 @@ import {
   WaybillCounterSchema,
 } from './schemas';
 
+import { NotificationModule } from '../notification';
 import { ProductService } from './product.service';
 import { CategoryService } from './category.service';
 import { WaybillService } from './waybill.service';
@@ -42,6 +43,7 @@ import { ExportController } from './export.controller';
       { name: WaybillCounterRef, schema: WaybillCounterSchema },
     ]),
     DocumentModule,
+    NotificationModule,
   ],
   controllers: [
     StockController,

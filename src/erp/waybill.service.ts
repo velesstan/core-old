@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { TelegramService } from 'src/notification';
 
 import { CreateWaybillDto, FindWaybillDto } from './dto';
 import {
@@ -23,13 +24,15 @@ export class WaybillService {
     private readonly waybillCounterModel: Model<WaybillCounterModel>,
     private readonly transactionService: TransactionService,
     private readonly productService: ProductService,
+    private readonly telegramService: TelegramService,
   ) {
     this.initialize();
   }
 
   async create(waybill: Waybill): Promise<WaybillModel> {
     const { action, stock, type, transactions, serialNumber, user } = waybill;
-    return await new this.waybillModel({
+
+    const $waybill = await new this.waybillModel({
       action,
       type,
       stock,
@@ -37,6 +40,18 @@ export class WaybillService {
       serialNumber,
       user,
     }).save();
+    await $waybill
+      .populate([{ path: 'user' }, { path: 'stock' }])
+      .execPopulate();
+
+    await this.telegramService.sendMessage(
+      `Новая накладная\nНомер: *${serialNumber}*\nТип: *${
+        type == WaybillType.INCOME ? 'Приход' : 'Расход'
+      }*\nКуда: *${($waybill.stock as any).title}*\nПользователь: *${
+        ($waybill.user as any).lastName
+      } ${($waybill.user as any).firstName}*`,
+    );
+    return $waybill;
   }
 
   private async initialize(): Promise<void> {

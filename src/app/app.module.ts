@@ -11,6 +11,7 @@ import { UserModule } from '../user';
 import { AuthModule } from '../auth';
 import { ERPModule } from '../erp';
 import { DocumentModule } from '../document';
+import { NotificationModule } from '../notification';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { DocumentModule } from '../document';
     AuthModule,
     ERPModule,
     DocumentModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

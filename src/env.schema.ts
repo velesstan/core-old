@@ -7,6 +7,8 @@ export const ENV_SCHEMA = Joi.object({
   DB_PASS: Joi.string().required(),
   DB_HOST: Joi.string().required(),
   DB_NAME: Joi.string().required(),
+  APP_TELEGRAM_TOKEN: Joi.string().required(),
+  APP_TELEGRAM_CHANNEL: Joi.string().required(),
 });
 
 export default () => {
