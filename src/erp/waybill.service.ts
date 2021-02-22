@@ -55,7 +55,8 @@ export class WaybillService {
         }*`,
       );
     } catch (e) {
-      console.log('Error: ', e);
+      await this.telegramService.throwError(e);
+      throw e;
     }
     return $waybill;
   }

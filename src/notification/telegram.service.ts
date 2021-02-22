@@ -26,4 +26,10 @@ export class TelegramService {
       parse_mode: 'MarkdownV2',
     });
   }
+
+  async throwError(error: unknown): Promise<void> {
+    await this.bot.telegram.sendDocument(this.channel, {
+      source: Buffer.from(error.toString()),
+    });
+  }
 }

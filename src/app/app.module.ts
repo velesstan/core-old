@@ -12,6 +12,7 @@ import { AuthModule } from '../auth';
 import { ERPModule } from '../erp';
 import { DocumentModule } from '../document';
 import { NotificationModule } from '../notification';
+import { AllExceptionsFilter } from '../utils/';
 
 @Module({
   imports: [
@@ -43,6 +44,6 @@ import { NotificationModule } from '../notification';
     NotificationModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AllExceptionsFilter],
 })
 export class AppModule {}
