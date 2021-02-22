@@ -43,14 +43,17 @@ export class WaybillService {
     await $waybill
       .populate([{ path: 'user' }, { path: 'stock' }])
       .execPopulate();
-
-    await this.telegramService.sendMessage(
-      `Новая накладная\nНомер: *${serialNumber}*\nТип: *${
-        type == WaybillType.INCOME ? 'Приход' : 'Расход'
-      }*\nКуда: *${($waybill.stock as any).title}*\nПользователь: *${
-        ($waybill.user as any).lastName
-      } ${($waybill.user as any).firstName}*`,
-    );
+    try {
+      await this.telegramService.sendMessage(
+        `Новая накладная\nНомер: *${serialNumber}*\nТип: *${
+          type == WaybillType.INCOME ? 'Приход' : 'Расход'
+        }*\nКуда: *${($waybill.stock as any).title}*\nПользователь: *${
+          ($waybill.user as any).lastName
+        } ${($waybill.user as any).firstName}*`,
+      );
+    } catch (e) {
+      console.log('Error: ', e);
+    }
     return $waybill;
   }
 
