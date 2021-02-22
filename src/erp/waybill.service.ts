@@ -47,7 +47,9 @@ export class WaybillService {
       await this.telegramService.sendMessage(
         `Новая накладная\nНомер: *${serialNumber}*\nТип: *${
           type == WaybillType.INCOME ? 'Приход' : 'Расход'
-        }*\nКуда: *${($waybill.stock as any).title}*\nПользователь: *${
+        }*\nКуда: *${($waybill.stock as any).title
+          .replace(/[(]/gi, '-')
+          .replace(/\)/gi, '')}*\nПользователь: *${
           ($waybill.user as any).lastName
         } ${($waybill.user as any).firstName}*`,
       );
