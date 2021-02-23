@@ -22,13 +22,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    this.telegramService.throwError(
-      JSON.stringify({
-        statusCode: status,
-        timestamp: new Date().toISOString(),
-        path: request.url,
-      }),
-    );
+    if (status >= 500) {
+      this.telegramService.throwError(
+        JSON.stringify({
+          statusCode: status,
+          timestamp: new Date().toISOString(),
+          path: request.url,
+        }),
+      );
+    }
 
     response.status(status).json({
       statusCode: status,

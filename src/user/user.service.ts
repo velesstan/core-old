@@ -48,7 +48,26 @@ export class UserService {
     return await this.userModel.findByIdAndRemove(id).exec();
   }
 
+  async findById(id: string): Promise<UserModel> {
+    return await this.userModel.findById(id).exec();
+  }
+
   async findOneByEmail(email: string): Promise<UserModel> {
     return await this.userModel.findOne({ email: email }).exec();
+  }
+
+  async setRefreshToken(
+    userId: string,
+    refreshToken: string,
+    refreshTokenExpires: Date,
+  ): Promise<void> {
+    await this.userModel
+      .findByIdAndUpdate(userId, {
+        $set: {
+          refreshToken,
+          refreshTokenExpires,
+        },
+      })
+      .exec();
   }
 }

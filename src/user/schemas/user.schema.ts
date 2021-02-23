@@ -15,6 +15,8 @@ export const UserSchema = new Schema(
     firstName: String,
     lastName: String,
     patronymic: String,
+    refreshToken: String,
+    refreshTokenExpires: Date,
   },
   {
     timestamps: true,

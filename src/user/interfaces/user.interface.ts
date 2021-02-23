@@ -4,4 +4,7 @@ export interface User {
   readonly email: string;
   readonly password: string;
 }
-export interface UserModel extends User, Document {}
+export interface UserModel extends User, Document {
+  readonly refreshToken: string;
+  readonly refreshTokenExpires: Date;
+}
