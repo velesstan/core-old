@@ -18,7 +18,7 @@ export class UpdateProductDto implements Product {
   readonly unit: string;
   @IsString()
   @MinLength(3)
-  @MaxLength(10)
+  @MaxLength(15)
   @Transform(({ value }) => value.trim().replace(/^./, (c) => c.toUpperCase()))
   readonly code: string;
   @IsString()
