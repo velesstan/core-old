@@ -34,7 +34,7 @@ export class TransactionService {
   }
 
   async count(query: FindTransactionsDto) {
-    const { stock, start, end, code } = query;
+    const { stock, start, end, code, category } = query;
     const aggregated = await this.transactionModel.aggregate([
       {
         $match: {
@@ -105,6 +105,7 @@ export class TransactionService {
       {
         $match: {
           ...(code ? { 'product.code': new RegExp(code.trim(), 'ig') } : {}),
+          ...(category ? { 'product.category': new ObjectId(category) } : {}),
         },
       },
       {

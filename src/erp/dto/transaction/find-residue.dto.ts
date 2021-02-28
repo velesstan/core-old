@@ -11,6 +11,10 @@ export class FindTransactionsDto {
   @IsOptional()
   readonly stock?: string;
 
+  @IsString()
+  @IsOptional()
+  readonly category?: string;
+
   @IsOptional()
   @IsDate()
   @Transform(({ value }) => dayjs.utc(value).startOf('day').toDate())

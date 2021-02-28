@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 
 import { DocumentService } from '../document';
 import { CategoryService } from './category.service';
+import { FindTransactionsDto } from './dto';
 import { ProductService } from './product.service';
+import { TransactionService } from './transaction.service';
 
 @Injectable()
 export class ExportService {
@@ -10,6 +12,7 @@ export class ExportService {
     private readonly productService: ProductService,
     private readonly categoryService: CategoryService,
     private readonly documentService: DocumentService,
+    private readonly transactionService: TransactionService,
   ) {}
 
   async exportProducts(): Promise<Buffer> {
@@ -27,5 +30,15 @@ export class ExportService {
       };
     }
     return this.documentService.exportProductsToExcel(data);
+  }
+
+  async exportResidue(query: FindTransactionsDto): Promise<Buffer> {
+    const transactions = await this.transactionService.count(query);
+    const category = await this.categoryService.getById(query.category);
+    const data = {
+      category,
+      transactions,
+    };
+    return this.documentService.exportResidueTransactionsToExcel(data);
   }
 }

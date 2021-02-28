@@ -107,4 +107,32 @@ export class DocumentService {
     }
     return xlsx.write(wb, { bookType: 'xlsx', type: 'buffer' });
   }
+
+  exportResidueTransactionsToExcel(data: any): Buffer {
+    const wb = xlsx.utils.book_new();
+    const categoryTitle = data.category.title;
+    const transactions = data.transactions;
+    wb.SheetNames.push(categoryTitle);
+    const ws = xlsx.utils.aoa_to_sheet([
+      [
+        '№',
+        'Код',
+        'Наименование',
+        'Цена опт.',
+        'Цена розн.',
+        'Остаток',
+        `Всего: ${transactions.length}`,
+      ],
+      ...transactions.map((t: any, index: number) => [
+        index + 1,
+        t.product.code,
+        t.product.title,
+        t.product.price_wholesale,
+        t.product.price_retail,
+        t.endBalance,
+      ]),
+    ]);
+    wb.Sheets[categoryTitle] = ws;
+    return xlsx.write(wb, { bookType: 'xlsx', type: 'buffer' });
+  }
 }
